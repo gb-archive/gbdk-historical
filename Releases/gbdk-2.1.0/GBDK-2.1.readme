@@ -1,0 +1,17 @@
+Short:        GameBoy Developer's Kit 2.1
+Author:       Lars Malmborg (port), Pascal Felber and Michael Hope
+Uploader:     glue df lth se <Lars Malmborg>
+Type:         dev/cross
+Version:      2.1.0-1
+Replaces:     dev/cross/GBDK-2.0.lha
+Architecture: m68k-amigaos
+
+GBDK (GameBoy Developer's Kit) is a full environment for developing software
+for GameBoy and hence Virtual GameBoy (Aminet:misc/emu/AmigaVGB.lha) or other
+emulators.
+This is an Amiga port of the UN*X version with some minor modifications.
+Included is an ANSI C compiler, assembler, linker and and an easy to use
+front-end as well as a bitmap converter to convert ILBM's to tiles used by
+GameBoy. This is a major leap from the previous version 1.0, in that
+"everything" is improved. The Amiga guide documentation is however not part
+of the distribution.

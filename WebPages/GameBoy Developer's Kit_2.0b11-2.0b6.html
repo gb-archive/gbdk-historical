@@ -1,0 +1,1212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252"><script src="GameBoy%20Developer's%20Kit_2.0b11-2.0b6_files/analytics.js" type="text/javascript"></script>
+<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app224.us.archive.org';v.server_ms=595;archive_analytics.send_pageview({});});</script>
+<script type="text/javascript" src="GameBoy%20Developer's%20Kit_2.0b11-2.0b6_files/bundle-playback.js" charset="utf-8"></script>
+<script type="text/javascript" src="GameBoy%20Developer's%20Kit_2.0b11-2.0b6_files/wombat.js" charset="utf-8"></script>
+<script type="text/javascript">
+  __wm.init("https://web.archive.org/web");
+  __wm.wombat("http://lsewww.epfl.ch:80/~felber/GBDK/","19980130181410","https://web.archive.org/","web","/_static/",
+	      "886184050");
+</script>
+<link rel="stylesheet" type="text/css" href="GameBoy%20Developer's%20Kit_2.0b11-2.0b6_files/banner-styles.css">
+<link rel="stylesheet" type="text/css" href="GameBoy%20Developer's%20Kit_2.0b11-2.0b6_files/iconochive.css">
+<!-- End Wayback Rewrite JS Include -->
+
+
+<title>GameBoy Developer's Kit</title>
+
+<!--
+Created:	13-Apr-97
+By:			Pascal Felber
+-->
+
+<!-- #include "PF header.incl" -->
+<!-- BASE HREF="http://lsewww.epfl.ch/~felber/GBDK/index.html" -->
+<!-- end include -->
+
+</head>
+<body text="#000000" bgcolor="#FFFFFF"><!-- BEGIN WAYBACK TOOLBAR INSERT -->
+<style type="text/css">
+body {
+  margin-top:0 !important;
+  padding-top:0 !important;
+  /*min-width:800px !important;*/
+}
+</style>
+<script>__wm.rw(0);</script>
+<div id="wm-ipp-base" style="display: block; direction: ltr;" lang="en">
+</div><div id="wm-ipp-print">The Wayback Machine - https://web.archive.org/web/19980130181410/http://lsewww.epfl.ch:80/~felber/GBDK/</div>
+<script type="text/javascript">//<![CDATA[
+__wm.bt(675,27,25,2,"web","http://lsewww.epfl.ch/~felber/GBDK/","19980130181410",1996,"/_static/",["/_static/css/banner-styles.css?v=fantwOh2","/_static/css/iconochive.css?v=qtvMKcIJ"], false);
+  __wm.rw(1);
+//]]></script>
+<!-- END WAYBACK TOOLBAR INSERT -->
+
+<center>
+<h1>GameBoy Developer's Kit</h1>
+
+<h3>Version 2.0b11 (DOS) and 2.0b6 (Unix)</h3>
+<h5>Last updated: 24-Nov-1997</h5>
+</center>
+
+<!-- ############################################################ -->
+<hr>
+
+<h2>NOTE</h2>
+
+<p>
+This page is not completely finished. You can still access the old (outdated) documentation <a href="https://web.archive.org/web/19980130181410/http://lsewww.epfl.ch/~felber/GBDK/index.old.html">here</a>.
+</p>
+
+<!-- ############################################################ -->
+<hr>
+
+<ul>
+	<li><a href="#Highlights">Highlights</a>
+	</li><li><a href="#Status">Status</a>
+	</li><li><a href="#Changes">Changes</a>
+	</li><li><a href="#Downloading">Downloading and Installing</a>
+	</li><li><a href="#Compiler">The Compiler</a>
+	</li><li><a href="#Assembler">The Assembler</a>
+	</li><li><a href="#Linker">The Linker</a>
+	</li><li><a href="#Libraries">The Include Files and Libraries</a>
+	</li><li><a href="#Examples">The Example Programs</a>
+	</li><li><a href="#Guidelines">GBDK Programming Guidelines</a>
+	</li><li><a href="#Porting">Porting Code from GBDK 1.1 to GBDK 2.0</a>
+	</li><li><a href="#Mixing">Mixing C and Assembly</a>
+	</li><li><a href="#Multiple">Multiple Bank Images</a>
+	</li><li><a href="#RAM">Copying Functions to RAM and HIRAM</a>
+	</li><li><a href="#IRQ">IRQ Handlers</a>
+	</li><li><a href="#Initialization">Initialization Routine</a>
+	</li><li><a href="#Changing">Changing Important Addresses</a>
+	</li><li><a href="#Troubleshooting">Troubleshooting</a>
+	</li><li><a href="#Problems">Known Problems</a>
+	</li><li><a href="#Links">Links</a>
+</li></ul>
+
+<!-- ############################################################ -->
+<hr>
+
+<h2><a name="Highlights"></a>Highlights</h2>
+
+<p>
+The GameBoy Developer's Kit (GBDK), is a set of tools that enable to 
+develop programs for the Nintendo GameBoy system, either in C or in 
+assembly. GBDK includes a set of libraries for the most common 
+requirements and generates image files for use with a real GameBoy or 
+with an emulator like <a href="https://web.archive.org/web/19980130181410/http://www.komkon.org/fms/VGB/">VGB</a>.
+</p>
+
+<p>
+GBDK is available for UNIX and DOS. The UNIX version of GBDK has been 
+tested on Solaris 2.5.1. The DOS version requires a 386 DX processor (or
+ higher), with a DOS Protected Mode Interface (DPMI).
+</p>
+
+<p>
+GBDK is currently being used in several projects. The first commercial project that used GBDK is <a href="https://web.archive.org/web/19980130181410/http://lsewww.epfl.ch/~felber/GBDK/ProAR2.html">Pro Action Replay II</a>.
+</p>
+
+<p>
+GBDK features:
+</p>
+
+<ul>
+	<li>An ANSI C compiler (with the only limitation that floating point values are not yet supported)
+	</li><li>An assembler that generates relocatable code
+	</li><li>A peephole optimizer
+	</li><li>A linker that produces GameBoy image files
+	</li><li>Support for multiple-bank images
+	</li><li>Smart linking
+	</li><li>A set of libraries, with source code
+	</li><li>Example programs in assembly and in C
+</li></ul>
+
+<p>
+<a href="https://web.archive.org/web/19980130181410/http://lsewww.epfl.ch/~felber/GBsed/">GBsed</a>,
+ a companion sprite editor written in Java, enables to create images and
+ sprites to be included in GameBoy programs. Alternatively, you can use 
+the Win 95/NT <a href="https://web.archive.org/web/19980130181410/ftp://ftp-lse.epfl.ch/pub/felber/emulation/gb/BMP2GB.zip">BMP2GB</a> programs by <a href="https://web.archive.org/web/19980130181410/mailto:Ian@resourcekt.co.uk">Ian James</a> that convert BMP files to C code, or the Win 95/NT <a href="https://web.archive.org/web/19980130181410/http://home.worldonline.nl/~hpmulder/gb/main.html">Gameboy Tile Designer</a> program that lets you create sprites for GBDK.
+</p>
+
+<!-- ############################################################ -->
+<hr>
+
+<h2><a name="Status"></a>Status</h2>
+
+<p>
+GBDK is freeware for non-commercial developments. If you use it, just 
+send me an e-mail to keep me informed of your work. If you really find 
+it great, you can send me something typical from your country...
+</p>
+
+<p>
+If GBDK is used for developing a commercial program, I ask you to 
+mention that the program has been made using GBDK (in the credits), and 
+to send me a copy of the finished product. If you feel generous, you can
+ also send me a copy of any other products that your company has 
+produced for the GameBoy...
+</p>
+
+<!-- ############################################################ -->
+<hr>
+
+<h2><a name="Changes"></a>Changes </h2>
+
+<p>
+The latest GBDK versions are available as DOS binary only since they use
+ a pre-release version of lcc 4.1. The Unix version will be available as
+ soon as lcc 4.1 is officially released. If you wish to get the latest 
+Unix version, please contact me directly.
+</p>
+
+<!--
+<H3>Changes in GBDK 2.0b12</H3>
+
+<UL>
+	<LI>New drawing library allowing full-screen drawing (based on GBAPA).
+	<LI>New example program (<CODE>paint.c</CODE>) illustrating this library.
+	<LI>Added floating point support (but there is not support yet for reading and printing floating point values).
+	<LI>Added longlong (32 bits) point support (but there is not support yet for reading and printing floating point values).
+	<LI>Changed IRQ handling. It is now possible to chain up to 8 interrupt handlers for each IRQ.
+	<LI>Several changes in the names of assembly functions.
+	<LI>The compiler can now work with 8 bits (default) or 16 bits integers, by specifying the <CODE>-int8</CODE> or <CODE>-int16</CODE> flag when invoking lcc.
+	<LI>Added support in the assembler for "official" mnemonics:
+<PRE>
+    LD (HLI),A
+    LD (HLD),A
+    LD A,(HLI)
+    LD A,(HLD)
+    ADD SP,offset
+    LDHL SP,offset
+</PRE>
+</UL>
+-->
+
+<h3>Changes in GBDK 2.0b11 (DOS binary only) - 24 Nov 97</h3>
+
+<ul>
+	<li>Fixed another bug in code generation, that could happen when performing logical operations on 1-byte variables.
+</li></ul>
+
+<h3>Changes in GBDK 2.0b10 (DOS binary only) - 6 Nov 97</h3>
+
+<ul>
+	<li>Fixed a nasty bug in code generation, that could happen when performing arithmetic operations on 1-byte variables.
+	</li><li>Changed the name of same files of the <code>gb-dtmf</code> example so that it compiles on DOS.
+</li></ul>
+
+<h3>Changes in GBDK 2.0b9 (DOS binary only)</h3>
+
+<ul>
+	<li>Several bug fixes in the compiler and in the libraries.
+</li></ul>
+
+<h3>Changes in GBDK 2.0b8 (DOS binary only)</h3>
+
+<ul>
+	<li>Limited all file names to 8 characters to solve problems on DOS.
+	</li><li>Added communication routines that enable to send data through 
+the link port of the GameBoy. Unfortunately, these routines do not 
+always work; so use them with care until the next GBDK release.
+	</li><li>Added the <code>comm.c</code> example which illustrates how to use communication routines.
+	</li><li>It is possible to specify the name of the program (to be written in the image header) at link time using the <code>-Wl-yn="XXX"</code> flag (where <code>X</code>
+ is the name of the program, which can contain up to 16 characters in 
+quotes, including spaces; on Unix, depending on your shell, you must add
+ backslashes before quotes and spaces like in <code>-Wl-yn=\"My\ Game\"</code>).
+	</li><li>Several bug fixes in the compiler.
+</li></ul>
+
+<h3>Changes in GBDK 2.0b7 (DOS binary only)</h3>
+
+<ul>
+	<li>GBDK now uses a pre-release of lcc 4.1 (DOS binary only), that fixes a couple of problems in code generation.
+	</li><li>A couple of important points have been documented in the <a href="#Guidelines">GBDK Programming Guidelines</a> and <a href="#Problems">Known Problems</a> sections.
+	</li><li>Several improvements and optimizations to the code generator.
+</li></ul>
+
+<h3>Changes in GBDK 2.0b6</h3>
+
+<ul>
+	<li>Added a peephole optimizer (with few rules at the moment).
+	</li><li>Changed the name of the hardware registers to match the "official" names.
+	</li><li>Added support for copying complete functions to RAM or HIRAM (<code>memcpy()</code> and <code>hiramcpy()</code> functions). The compiler now automatically generates two symbol for the start and the end of each function, named <code>start_X</code> and <code>end_X</code> (where <code>X</code> is the name of the function). This enables to calculate the length of a function when copying it to RAM.
+	</li><li>Added the <code>ram_fn.c</code> example which illustrates how to copy functions to RAM and HIRAM.
+	</li><li>Added support for installing IRQ handlers.
+	</li><li>Added the <code>irq.c</code> example which illustrates how to install IRQ handlers.
+	</li><li>Added RAM banks support (<code>switch_ram_bank()</code> function). The <code>switch_bank()</code> function has been renamed to <code>switch_rom_bank()</code>. The <code>banks.c</code> example has been updated. The flags for generating multiple bank images have been modified.
+	</li><li>It is possible to set the sprite ram location at link time using the <code>-Wl-g.OAM=#</code> flag (where <code>#</code> is the address of the sprite ram). The sprite ram address must begin at an address multiple of 0x100, and is 0xA0 bytes long.
+</li></ul>
+
+<h3>Changes in GBDK 2.0b5</h3>
+
+<ul>
+	<li>New documentation (not finished yet).
+	</li><li>Fixed a bug that could generate wrong code in switch statements.
+	</li><li>Fixed a bug in <code>int</code> comparison.
+	</li><li>Added a DTMF program written by Osamu Ohashi.
+	</li><li>Added a game (Deep Scan) written by a friend of Osamu.
+	</li><li>Modified the <code>delay()</code> function so that it takes a long parameter. It can be used to wait between 1 and 65536 milliseconds (0 = 65536). The <code>pause()</code> function has been removed.
+</li></ul>
+
+<h3>Changes in GBDK 2.0b4</h3>
+
+<ul>
+	<li>Fixed a bug that could generate wrong code when using hexadecimal constants.
+	</li><li>A new example (<code>galaxy.c</code>) has been added. It is the C version of the <code>space.s</code> example. <code>sprite.c</code> has been removed.
+	</li><li>Most of the libraries have been split into small modules for reducing final code size.
+</li></ul>
+
+<h3>Changes in GBDK 2.0b3</h3>
+
+<ul>
+	<li>GBDK can generate multiple-banks images, i.e. images greater than 32kB (see the <code>banks</code> example).
+	</li><li>It is possible to set the stack pointer at link time using the <code>-Wl-g.STACK=#</code> flag (where <code>#</code> is the address of the stack pointer).
+	</li><li>Several functions (e.g. <code>show_bkg()</code>) have been changed into macros (e.g. <code>SHOW_BKG</code>).
+	</li><li>The <code>delay()</code> function waits exactly 1 millisecond, and the <code>pause()</code> waits 256 milliseconds.
+	</li><li>Linking with the standard libraries is no more required. The <code>lib/gb.lib</code> (<code>lib\gb.lib</code>
+ on DOS) text file contains a list of modules in which to look for 
+undefined symbols. The linker will parse this file, and link your code 
+with the required modules only. The <code>stdio</code> library has been split in several object files, and only necessary modules will be added to your code, thus reducing its size.
+	</li><li>The GBDK distribution can be located anywhere in your system if you use the <code>-Wo-lccdir=GBDK-DIR</code> flag when invoking lcc.
+	</li><li>Bug fixes.
+</li></ul>
+
+<h3>Changes in GBDK 2.0b2</h3>
+
+<ul>
+	<li>Lots of bug fixes.
+	</li><li>GBDK has to be in the <code>\GBDK-2.0</code> directory on DOS machines.
+</li></ul>
+
+<h3>Changes in GBDK 2.0b1</h3>
+
+<ul>
+	<li>The code generator has been completely rewritten with the new 
+version of lcc. It produces much smaller and more efficient code. The 
+size of the code is generally between 20 and 50% smaller. A number of 
+small optimizations are still to be done.
+	</li><li><b>The size of basic types has been changed:</b>
+	<ul>
+		<li>An <code>int</code> is 8 bits.
+		</li><li>A <code>long</code> is 16 bits.
+	</li></ul>
+	This change was required for the code generator to produce better code, because the Z80 is actually an 8-bit processor.
+	</li><li>The linker generates the complement checksum correctly now.
+	</li><li>The libraries and example programs have been modified for the new code generator.
+</li></ul>
+
+<h3>Changes in GBDK 1.1</h3>
+
+<ul>
+	<li>Removed Xloadimage from the GBDK distribution. It is now available as a separate archive.
+	</li><li>A compiled DOS version is now available (cross-compiled on my Sun Workstation!).
+	</li><li>The libraries and the example programs have been improved.
+	</li><li>The make script has been improved. Compiling on UNIX should be easier.
+	</li><li>Many bugfixes.
+</li></ul>
+
+<!-- ############################################################ -->
+<hr>
+
+<h2><a name="Downloading"></a>Downloading and Installing</h2>
+
+<p>
+Installing GBDK requires the following steps:
+</p>
+
+<h3>On UNIX</h3>
+
+<p>
+You must have gcc, gnu make and /bin/csh for building GBDK.
+</p>
+
+<ul>
+	<li>Get the GBDK (<a href="https://web.archive.org/web/19980130181410/ftp://ftp-lse.epfl.ch/pub/felber/emulation/gb/GBDK-2.0.tar.gz">GBDK-2.0.tar.gz</a>) distribution.
+	</li><li>Uncompress it:
+<pre>    % gzip -cd GBDK-2.0.tar.gz | tar xf -
+</pre>
+	</li><li>Go into the GBDK-2.0 directory:
+<pre>    % cd GBDK-2.0
+</pre>
+	</li><li>At that point, you can edit the <code>make_unix.sh</code> shell script to change the installation directory.
+	</li><li>Compile and install GBDK:
+<pre>    % ./make_unix
+</pre>
+	This will create a directory (<code>$HOME/GBDK-2.0</code> by default) with all the files you need in it.
+	</li><li>Compile the libraries and the examples:
+<pre>    % cd $HOME/GBDK-2.0/lib
+    % make
+    % cd $HOME/GBDK-2.0/examples
+    % make
+</pre>
+	At that point, you don't need the sources anymore and you can delete them.
+	</li><li>Run the examples with an emulator.
+</li></ul>
+
+<h3>On DOS</h3>
+
+<p>
+You must have at least a 386 DX processor, and a DOS Protected Mode 
+Interface (DPMI). For instance, Windows 95 provides a DPMI. You can also
+ get one from <a href="https://web.archive.org/web/19980130181410/ftp://ftp-lse.epfl.ch/pub/felber/emulation/csdpmi3b.zip">here</a>.
+</p>
+
+<ul>
+	<li>Get the GBKD (<a href="https://web.archive.org/web/19980130181410/ftp://ftp-lse.epfl.ch/pub/felber/emulation/gb/GBDK-2.0.zip">GBDK-2.0.zip</a>) distribution.
+	</li><li>Uncompress it in the root of one of your drives:
+<pre>    C:&gt; unzip -d GBDK-2.0.zip
+</pre>
+	This will create a directory (<code>\GBDK-2.0</code>) with all the files you need in it.
+	</li><li>Compile the libraries and the examples:
+<pre>    C:&gt; cd \GBDK-2.0\lib
+    C:&gt; make
+    C:&gt; cd \GBDK-2.0\examples
+    C:&gt; make
+</pre>
+	</li><li>Run the examples with an emulator.
+</li></ul>
+
+<!-- ############################################################ -->
+<hr>
+
+<h2><a name="Compiler"></a>The Compiler</h2>
+
+<p>
+The compiler is based on <a href="https://web.archive.org/web/19980130181410/http://www.cs.princeton.edu/software/lcc/">lcc</a>,
+ a free of charge retargetable compiler for ANSI/ISO C. GBDK includes a 
+code generator for lcc that generates code for the GameBoy custom Z80. 
+For an ehaustive description, read the <a href="https://web.archive.org/web/19980130181410/http://www.cs.princeton.edu/software/lcc/cgi-bin/man2html.cgi?lcc+1">man page</a> included with the lcc distribution.
+</p>
+
+<p>
+The compiler defines the following sizes for basic types:
+</p>
+
+<table border="1">
+<tbody><tr><td><b>type</b></td>
+<td><b>size</b></td>
+<td><b>min</b></td>
+<td><b>max</b></td></tr>
+
+<tr><td>char</td>
+<td>1 byte</td>
+<td>-128</td>
+<td>127</td></tr>
+
+<tr><td>unsigned char</td>
+<td>1 byte</td>
+<td>0</td>
+<td>255</td></tr>
+
+<tr><td>int</td>
+<td>1 byte</td>
+<td>-128</td>
+<td>127</td></tr>
+
+<tr><td>unsigned int</td>
+<td>1 byte</td>
+<td>0</td>
+<td>255</td></tr>
+
+<tr><td>long</td>
+<td>2 byte</td>
+<td>-32768</td>
+<td>32767</td></tr>
+
+<tr><td>unsigned long</td>
+<td>2 byte</td>
+<td>0</td>
+<td>65535</td></tr>
+
+<tr><td>pointer</td>
+<td>2 byte</td>
+<td>0</td>
+<td>65535</td></tr>
+</tbody></table>
+
+<p>
+Since the CPU is an 8-bit processor, working with <code>int</code> values is much more efficient than working with <code>long</code> values. But you have to be careful with overflows.
+</p>
+
+<p>
+When generating a GameBoy image, the linker will look for undefined symbols in each of the object files listed in the <code>lib/gb.lib</code>
+ text file. If one of these object files contains the symbol, it will be
+ linked with the main program. If none of these object files contain the
+ symbol, the linker will generate an error. Therefore, there is no need 
+to explicitely link the main program with the standard libraries.
+</p>
+
+<p>
+Here are some examples of lcc usage:
+</p>
+
+<ul>
+	<li>Compile a C source file (<code>source.c</code>) and generate a GameBoy image (<code>image.gb</code>):
+</li></ul>
+<pre>    lcc -o image.gb source.c
+</pre>
+
+<ul>
+	<li>Assemble an assembly source file (<code>source.s</code>) and generate a GameBoy image (<code>image.gb</code>):
+</li></ul>
+<pre>    lcc -o image.gb source.s
+</pre>
+
+<ul>
+	<li>Compile a C source file (<code>source.c</code>) and generate an object file (<code>object.o</code>):
+</li></ul>
+<pre>    lcc -c -o object.o source.c
+</pre>
+
+<ul>
+	<li>Assemble an assembly source file (<code>source.s</code>) and generate an object file (<code>object.o</code>):
+</li></ul>
+<pre>    lcc -c -o object.o source.s
+</pre>
+
+<ul>
+	<li>Link two object files (<code>object1.o</code> and <code>object2.o</code>) and generate a GameBoy image (<code>image.gb</code>):
+</li></ul>
+<pre>    lcc -o image.gb object1.o object2.o
+</pre>
+
+<ul>
+	<li>Generate a GameBoy image (<code>image.gb</code>) from an assembly source file (<code>source.s</code>), a C source file (<code>source.c</code>), and an object file (<code>object.o</code>):
+</li></ul>
+<pre>    lcc -o image.gb source.s source.c object.o
+</pre>
+
+<p>
+The following flags allow to pass options to the preprocessor, the compiler, the assembler, and the linker:
+</p>
+<pre>    -Wp
+    -Wf
+    -Wa
+    -Wl
+</pre>
+
+<p>
+A typical useage of these flags is for generating listing and map files:
+</p>
+
+<ul>
+	<li>A listing file is produced by the assembler if you use the <code>-Wa-l</code> flag. The name of this file is the same as the object file, with the <code>.lst</code>
+ extension. It contains the assembly code and source. If the assembler 
+generates error messages, listing files are necessary for locating these
+ errors.
+	</li><li>A map file is produced by the linker if you use the <code>-Wl-m</code> flag. The name of this file is the same as the image file, with the <code>.map</code>
+ extension. It contains informations about where functions and variables
+ are located in ROM. If the linker generates error messages, map files 
+are useful for locating these errors.
+</li></ul>
+
+<p>
+It is generally a good habit to always generate listing and map files.
+</p>
+
+<!-- ############################################################ -->
+<hr>
+
+<h2><a name="Assembler"></a>The Assembler</h2>
+
+<p>
+The assembler is based on <a href="https://web.archive.org/web/19980130181410/http://shop-pdp.kent.edu/ashtml/asxxxx.htm">ASxxxx Cross Assemblers</a>.
+</p>
+
+<p>
+The GameBoy processor is very similar to the Z80, although some of the 
+instructions are missing and some ther have been added. Also, she second
+ set of registers (BC', DE', HL', AF') and the index registers (IX, IY) 
+are missing and, consequently, there are no DD and FD opcode tables. 
+Finally, I/O ports are gone and so are all IN/OUT opcodes. For a 
+descriptions of the changed instructions, read the <a href="https://web.archive.org/web/19980130181410/http://www.komkon.org/fms/GameBoy/">GameBoy FAQ</a>.
+</p>
+
+<p>
+I have modified the name of some of the GB-specific opcodes:
+</p>
+<pre>    LD (HLI),A      -&gt; LD (HL+),A
+    LD (HLD),A      -&gt; LD (HL-),A
+    LD A,(HLI)      -&gt; LD A,(HL+)
+    LD A,(HLD)      -&gt; LD A,(HL-)
+    ADD SP,offset   -&gt; LDA SP,offset(SP)
+    LDHL SP,offset  -&gt; LDA HL,offset(SP)
+</pre>
+
+<p>
+The <code>LDA</code> opcode means "load address", like in 68x00 
+assembly. I've called these instructions like this because both are 
+orthogonal (they do the same thing on two different registers).
+</p>
+
+<p>
+The assembler accepts the following flags:
+</p>
+<pre>ASxxxx Assembler V01.75  (GameBoy Z80-like CPU)
+ 
+Usage: [-dqxgalopsf] outfile file1 [file2 file3 ...]
+  d    decimal listing
+  q    octal   listing
+  x    hex     listing (default)
+  g    undefined symbols made global
+  a    all user symbols made global
+  l    create list   output outfile[LST]
+  o    create object output outfile[o]
+  s    create symbol output outfile[SYM]
+  p    disable listing pagination
+  f    flag relocatable references by  `   in listing file
+ ff    flag relocatable references by mode in listing file
+</pre>
+
+<p>
+For an ehaustive description, read the <code>asmlnk.doc</code> file in the <code>doc</code>
+directory, or <a href="https://web.archive.org/web/19980130181410/http://shop-pdp.kent.edu/ashtml/asxdoc.htm">this html-ized document</a>.
+</p>
+
+<!-- ############################################################ -->
+<hr>
+
+<h2><a name="Linker"></a>The Linker</h2>
+
+<p>
+The linker is based on <a href="https://web.archive.org/web/19980130181410/http://shop-pdp.kent.edu/ashtml/asxxxx.htm">ASxxxx Cross Assemblers</a>. It has been extended in particular to support generation of GameBoy images.
+</p>
+
+<p>
+The linker accepts the following flags:
+</p>
+<pre>ASxxxx Linker V01.75
+ 
+Startup:
+  --   [Commands]              Non-interactive command line input
+  -c                           Command line input
+  -f   file[LNK]               File input
+  -p   Prompt and echo of file[LNK] to stdout (default)
+  -n   No echo of file[LNK] to stdout
+Usage: [-Options] outfile file [file ...]
+Librarys:
+  -k    Library path specification, one per -k
+  -l    Library file specification, one per -l
+Relocation:
+  -b   area base address = expression
+  -g   global symbol = expression
+  -yo  Number of rom banks (default: 2)
+  -ya  Number of ram banks (default: 0)
+  -yt  MBC type (default: no MBC)
+  -yn  Name of program (default: name of output file)
+Map format:
+  -m   Map output generated as file[MAP]
+  -x   Hexidecimal (default)
+  -d   Decimal
+  -q   Octal
+Output:
+  -i   Intel Hex as file[IHX]
+  -s   Motorola S19 as file[S19]
+  -z   Gameboy image as file[GB]
+List:
+  -u    Update listing file(s) with link data as file(s)[.RST]
+End:
+  -e   or null line terminates input
+</pre>
+
+<p>
+For an ehaustive description, read the <code>asmlnk.doc</code> file in the <code>doc</code>
+directory, or <a href="https://web.archive.org/web/19980130181410/http://shop-pdp.kent.edu/ashtml/asxdoc.htm">this html-ized document</a>.
+</p>
+
+<!-- ############################################################ -->
+<hr>
+
+<h2><a name="Libraries"></a>The Include Files and Libraries</h2>
+
+<p>
+Several include files are part of GBDK. Some of them only define useful 
+macros (with no code associated), while others define functions 
+implemented in separate object modules. The libraries are split in 
+several small object files in order to reduce the size of the final 
+image file (only the required modules are linked with the main program).
+ The include files and libraries are divided in the following groups:
+</p>
+
+<h3>Runtime support</h3>
+
+<p>
+The <code>crt0.o</code> object module contains the basic C runtime 
+library, with GameBoy initialization routines, C support and other 
+essential things. This library is required and automatically linked with
+ every program.
+</p>
+
+<p>
+The <code>gb.h</code> include file defines basic GameBoy-related macros and functions. It also includes the <code>hardware.h</code> file that defines GameBoy hardware registers.
+</p>
+
+<h3>Standard C libraries</h3>
+
+<p>
+The <code>ctype.h</code>, <code>stdarg.h</code>, <code>stdlib.h</code>, <code>string.h</code>, and <code>types.h</code> include files define some functions found in the standard C libraries.
+</p>
+
+<h3>Console Input/Output</h3>
+
+<p>
+Basic console I/O is provided through a set of functions defined in the <code>console.h</code> and <code>stdio.h</code>
+ include files. Note that console I/O uses most of the tiles and sprites
+ of the GameBoy, and thus is not easily mixable with graphics programs.
+</p>
+
+<h3>Simple Graphic Library</h3>
+
+<p>
+Simple graphic functions for drawing points and images on the screen are defined in the <code>drawing.h</code> include file. Note that the graphic library uses most of the tiles and sprites of the GameBoy.
+</p>
+
+<!-- ############################################################ -->
+<hr>
+
+<h2><a name="Examples"></a>The Example Programs</h2>
+
+<p>
+GBDK includes several example programs both in C and in assembly. They are located in the <code>examples</code> directory, and in its subdirectories. They can be build by typing <code>make</code> in the correnponding directory.
+</p>
+
+<h3><code>space.s</code></h3>
+
+<p>
+The <code>space.s</code> example is an assembly program that 
+demonstrates the use of sprites, window, background, fixed-point values 
+and more. The following keys are used:
+</p>
+<pre>    Arrow keys     : Change the speed (and direction) of the sprite
+    Arrow keys + A : Change the speed (and direction) of the window
+    Arrow keys + B : Change the speed (and direction) of the background
+    START          : Open/close the door
+    SELECT         : Basic fading effect
+</pre>
+
+<h3><code>galaxy.c</code></h3>
+
+<p>
+The <code>galaxy.c</code> example is a C translation of the <code>space.s</code> assembly program.
+</p>
+
+<h3><code>sound.c</code></h3>
+
+<p>
+The <code>sound.c</code> example is meant for experimenting with the 
+soung generator of the GameBoy (to use on a real GameBoy). The four 
+different sound modes of the GameBoy are available. It also demonstrates
+ the use of bit fields in C (it's a quick hack, so don't expect too much
+ from the code). The following keys are used:
+</p>
+
+
+<pre>    UP/DOWN      : Move the cursor
+    RIGHT/LEFT   : Increment/decrement the value
+    RIGHT/LEFT+A : Increment/decrement the value by 10
+    RIGHT/LEFT+B : Set the value to maximum/minimum
+    START        : Play the current mode's sound (or all modes if in control screen)
+    START+A      : Play a little music with the current mode's sound
+    SELECT       : Change the sound mode (1, 2, 3, 4 and control)
+    SELECT+A     : Dump the sound registers to the screen
+</pre>
+
+<h3><code>rpn.c</code></h3>
+
+<p>
+The <code>rpn.c</code> example is a basic RPN calculator. Try entering expressions like <code>12 134*</code> and then <code>1789+</code>.
+</p>
+
+<h3><code>gb-dtmf/gb-dtmf.c</code></h3>
+
+<p>
+The <code>gb-dtmf/gb-dtmf.c</code> program, written by <a href="https://web.archive.org/web/19980130181410/mailto:ooo@tky0.attnet.or.jp">Osamu Ohashi</a>, is a Dual Tone Multi-Frequency (DTMF) generator.
+</p>
+
+<h3><code>banks.c</code></h3>
+
+<p>
+The <code>banks.c</code> example illustrates how to make multiple-banks programs.
+</p>
+
+<h3><code>ram_fn.c</code></h3>
+
+<p>
+The <code>ram_fn.c</code> example illustrates how to copy functions to RAM or HIRAM, and how to call them from C.
+</p>
+
+<h3><code>irq.c</code></h3>
+
+<p>
+The <code>irq.c</code> example illustrates how to install IRQ handlers.
+</p>
+
+<h3><code>comm.c</code></h3>
+
+<p>
+The <code>comm.c</code> example illustrates how to use communication routines.
+</p>
+
+<h3><code>dscan/dscan.c</code></h3>
+
+<p>
+Deep Scan (<code>dscan/dscan.c</code>) is a game written by a friend of 
+Osamu Ohashi. Your aim is to destroy the submarines from your boat, and 
+to avoid the projectiles that they send to you. The game should be 
+self-explanatory. The following keys are used:
+</p>
+<pre>    RIGHT/LEFT   : Move your boat
+    A/B          : Send a bomb from one side of your boat
+    START        : Start game or pause game
+
+    When game is paused:
+
+    SELECT       : Invert A and B buttons
+    RIGHT/LEFT   : Change speed
+    UP/DOWN      : Change level
+</pre>
+
+<!-- ############################################################ -->
+<hr>
+
+<h2><a name="Guidelines"></a>GBDK Programming Guidelines</h2>
+
+<ul>
+	<li>Use 8-bit values as much as possible.
+	</li><li><b>Prefer unsigned variables to signed ones.</b> The code generated will be generally more efficient, espacially when comparing two values.
+	</li><li>Using global variables is generally more efficient that using local variables. In particular, <b>avoid big local variables</b> (such as arrays or structures). The code could be inefficient if you have more than 127 bytes of local variables.
+	</li><li>The lcc compiler does not fold every possible constant expression. For instance, in the following code:
+<pre>    foo(i + 2 - 1);
+</pre>
+	lcc will add 2 and substract 1, instead of just adding 1. In this situation, you should parenthesize then constant expression:
+<pre>    foo(i + (2 - 1));
+</pre>
+
+	</li><li>Try to use only the following type definitions for integer variables (defined in <code>type.h</code>):
+<pre>    typedef int           BYTE;
+    typedef unsigned int  UBYTE;
+    typedef long          WORD;
+    typedef unsigned long UWORD;
+</pre>
+	That way, you will always know the size of your variables.
+	</li><li>When using constants, use the <code>U</code>, <code>L</code> and <code>UL</code> postfixes when necessary. <code>U</code> specifies that the constant is unsigned, while <code>L</code> specifies that the constant is long. Consider the following example:
+<pre>    UBYTE i, j = 0;
+    i = j+0x80;
+</pre>
+	The compiler will think that <code>0x80</code> is a signed value, and 
+since it is bigger than the biggest signed 8-bit value (0x79), the 
+compiler will treat it as a long constant. Following the C 
+specification, <code>j</code> will be extended to a long, and added to <code>0x80</code> using a long addition (which is costly on an 8-bit processor), before beeing truncated to an 8-bit value and assigned to <code>i</code>. This example should be written:
+<pre>    UBYTE i, j = 0;
+    i = j+0x80U;
+</pre>
+	</li><li>Avoid using multiplications, divisions and modulos as much as 
+possible. These operations have no corresponding CPU instructions 
+(software functions), and hence are time costly.
+	</li><li>Do not declare initialized variables at the file level, except
+ when they are read-only, because they will be located in ROM, e.g. 
+<pre>    int i1;          /* OK    : will be located in RAM */
+    char *s1;        /* OK    : will be located in RAM */
+    int i2 = 0;      /* Error : will be located in ROM */
+    char *s2 = "Hi"; /* Error : will be located in ROM */
+
+    void main() { ... }
+</pre>
+	</li><li>Prefer the <code>==</code> and <code>!=</code> comparison operators to <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, and <code>&gt;=</code>. The code will be shorter and quicker. For instance:
+<pre>    for(i = 0; i &lt; 10; i++)
+</pre>
+   is less efficient than
+<pre>    for(i = 0; i != 10; i++)
+</pre>
+</li></ul>
+
+<!-- ############################################################ -->
+<hr>
+
+<h2><a name="Porting"></a>Porting Code from GBDK 1.1 to GBDK 2.0</h2>
+
+<ul>
+	<li>Change your <code>int</code> variables to <code>long</code> if they have to be bigger than 255. If they should only contain values between 0 and 255, use an <code>unsigned int</code>.
+	</li><li>If your application uses the <code>delay</code> function, you'll have to adapt your delay values.
+	</li><li>Several functions have new names. In particular some of them have been changed to macros (e.g. <code>show_bkg()</code> is now <code>SHOW_BKG</code>).
+	</li><li>You will probably have to change the name of the header files that you include.
+</li></ul>
+
+<!-- ############################################################ -->
+<hr>
+
+<h2><a name="Mixing"></a>Mixing C and Assembly</h2>
+
+<p>
+For mixing C and assembly, you must use one file per language (you 
+cannot embed C code with assembly) and link both files together. Here 
+are the things to know:
+</p>
+
+<ul>
+	<li>A C identifier <code>i</code> will be called <code>_i</code> in assembly.
+	</li><li>Results are always returned into the <code>DE</code> register.
+	</li><li>Parameters are always passed on the stack (starting at <code>SP+2</code> because the return address is also saved on the stack).
+	</li><li>Assembly identifier are exported using the <code>.globl</code> directive.
+	</li><li>You can access GameBoy hardware registers using <code>_reg_0xXX</code> where <code>XX</code> is the register number (see <code>sound.c</code> for an example).
+	</li><li>Registers must be preserved across function calls (you must store them at function begin, and restore them at the end), except <code>HL</code> (and <code>DE</code> when the function returns a result).
+</li></ul>
+
+<p>
+Here is an example of how to mix assembly with C:
+</p>
+
+<h3><code>main.c</code></h3>
+
+<pre>    main()
+    {
+      int i;
+      int add(int, int);
+
+      i = add(1, 3);
+    }
+</pre>
+
+<h3><code>add.s</code></h3>
+
+<pre>    .globl _add
+    _add:         ; int add(int a, int b)
+                  ; There is no register to save:
+                  ;  BC is not used
+                  ;  DE is the return register
+                  ;  HL needs never to be saved
+    LDA  HL,2(SP)
+    LD   E,(HL)   ; Get a in DE
+    INC  HL
+    LD   D,(HL)
+    INC  HL
+    LD   A,(HL)   ; Get b in HL
+    INC  HL
+    LD   H,(HL)
+    LD   L,A
+    ADD  HL,DE    ; Add DE to HL
+    LD   D,H
+    LD   E,L
+                  ; There is no register to restore
+    RET           ; Return result in DE
+</pre>
+
+<!-- ############################################################ -->
+<hr>
+
+<h2><a name="Multiple"></a>Multiple Bank Images</h2>
+
+<p>
+GBDK can generate multiple bank images (with both multible ROM and RAM 
+banks) for MBC1 and MBC2 memory bank controllers. Multiple RAM banks are
+ only supported by MBC 1.
+</p>
+
+<p>
+With multiple ROM banks, addresses 0x0000 to 0x3FFF are reserved for the
+ fixed ROM bank, while addresses 0x4000 to 0x7FFF are switchable, i.e. 
+can be used for any bank. Switchable ROM banks are called <code>_CODE_1</code>, <code>_CODE_2</code>,... and the fixed ROM bank is called <code>_CODE</code> (note that there is no <code>_CODE_0</code>). The maximum number of ROM banks is 32.
+</p>
+
+<p>
+Addresses 0xC000 to 0xDFFF are always reserved for the internal RAM. 
+Addresses 0xA000 to 0xBFFF are reserved for (switchable) external RAM. 
+External RAM banks are called <code>_BSS_0</code>, <code>_BSS_1</code>, <code>_BSS_2</code>,... and internal RAM is called <code>_BSS</code>. The maximum number of external RAM banks is 4.
+</p>
+
+<p>
+When deciding how to populate your RAM banks, remember that local 
+variables are always allocated on the stack, and initialized global 
+variables are located in ROM. Only uninitialized global or static 
+variables are allocated into RAM.
+</p>
+
+<p>
+For generating multiple bank images, you have to:
+</p>
+
+<ul>
+	<li>Place the code for your ROM bank in one or several source files. 
+All the code of the source file(s) will be in the same ROM bank.
+	</li><li>Compile the source file into an object file, and specify in which ROM bank to locate the code using the <code>-Wf-bo#</code> flag (where <code>#</code> is the number of the bank, greater than 0). If you do not use this flag, the code will be located in the fixed ROM bank.
+	</li><li>Place the code for your RAM bank in one or several source 
+files. All the data of the source file(s) will be in the same RAM bank.
+	</li><li>Compile the source file into an object file, and specify in which RAM bank to locate the code using the <code>-Wf-ba#</code> flag (where <code>#</code> is the number of the bank, greater or equal to 0). If you do not use this flag, the data will be located in the internal RAM.
+	</li><li>Repeat this for all your banks. You can also use both flags on
+ the same file to locate code and data in different ROM and RAM banks.
+	</li><li>Link the object files, and specify the number of banks using the <code>-Wl-yo#</code> (for ROM) and <code>-Wl-ya#</code> (for RAM) flags (where <code>#</code> is the number of banks), and the type of MBC used in the cartridge using the <code>-Wl-yt#</code> flag (where <code>#</code> is the cartridge type code to be located at address 0x147 of the image).<br>
+	Standard supported ROM sizes are:
+<pre>  256Kbit =  32KByte =   2 banks
+  512Kbit =  64KByte =   4 banks
+    1Mbit = 128KByte =   8 banks
+    2Mbit = 256KByte =  16 banks
+    4Mbit = 512KByte =  32 banks
+</pre>
+	Standard supported RAM sizes are:	
+<pre>     None
+   64kBit =  8kB = 1 bank
+  256kBit = 32kB = 4 banks
+</pre>
+	Standard supported cartridge types are:
+<pre>  0 : ROM ONLY
+  1 : ROM+MBC1
+  2 : ROM+MBC1+RAM
+  3 : ROM+MBC1+RAM+BATTERY
+  5 : ROM+MBC2
+  6 : ROM+MBC2+BATTERY
+</pre>
+</li></ul>
+
+<p>
+Bank switching is not automatic in programs. You have to explicitely call the <code>switch_rom_bank()</code> and <code>switch_ram_bank()</code> functions. See <code>banks.c</code> for a complete example.
+</p>
+
+<!-- ############################################################ -->
+<hr>
+
+<h2><a name="RAM"></a>Copying Functions to RAM and HIRAM</h2>
+
+<p>
+It is possible to copy functions to RAM and HIRAM (using the <code>memcpy()</code> and <code>hiramcpy()</code>
+ functions), and execute them from C. The compiler automatically 
+generates two symbol for the start and the end of each function, named <code>start_X</code> and <code>end_X</code> (where <code>X</code>
+ is the name of the function). This enables to calculate the length of a
+ function when copying it to RAM. Ensure you have enough free space in 
+RAM or HIRAM for copying a function.
+</p>
+
+<p>
+There are basically two ways for calling a function located in RAM, HIRAM, or ROM:
+</p>
+
+<ul>
+	<li>Declare a pointer-to-function variable, and affect it the address of the function to call.
+	</li><li>Declare the function as <code>extern</code>, and set its address at link time using the <code>-Wl-gXXX=#</code> flag (where <code>XXX</code> is the name of the function, and <code>#</code> is its address).
+</li></ul>
+
+<p>
+The second approach is slightly more efficient. Both approaches are illustrated in the <code>ram_fn.c</code> example.
+</p>
+
+<!-- ############################################################ -->
+<hr>
+
+<h2><a name="IRQ"></a>IRQ Handlers</h2>
+
+<p>
+The GameBoy hardware can generate 5 types of interrupts:
+</p>
+<pre>  VBL : V-blank
+  LCD : LCDC status
+  TIM : Timer overflow
+  SIO : Serial I/O transfer end
+  JOY : Transition from high to low of joypad
+</pre>
+
+<p>
+It is possible to install your own IRQ handlers (in C or in assembly) for any of these interrupts:
+</p>
+
+<ul>
+	<li>Write a function (say <code>foo()</code>) that takes no parameter, and that returns nothing. Remember that the code executed in an IRQ handler must be short.
+	</li><li>At the end of your function, you should call the old interrupt handler (<code>_irq_VBL()</code>, <code>_irq_LCD()</code>, <code>_irq_TIM()</code>, <code>_irq_SIO()</code>, or <code>_irq_JOY()</code>).
+	</li><li>Enable interrupts for the IRQ you want to handle, using the <code>set_interrupts()</code> function. Note that the VBL interrupt is already enabled before the <code>main()</code> function is called. If you want to set the interrupts before <code>main()</code> is called, you must install an initialization routine.
+	</li><li>At link time, specify the name of the function that will handle the IRQ using the <code>-Wl-g.irq_XXX=YYY</code> flag (where <code>XXX</code> is the IRQ you want to handle, and <code>XXX</code> is the name of your function). Remember that your function will have an initial underscore in assembly. In our example, if <code>foo()</code> should be called upon VBL, it will be <code>-Wl-g.irq_VBL=_foo</code>.
+</li></ul>
+
+<p>
+See <code>irq.c</code> for a complete example.
+</p>
+
+<!-- ############################################################ -->
+<hr>
+
+<h2><a name="Initialization"></a>Initialization Routine</h2>
+
+<p>
+You can install a routine that will be executed before the <code>main()</code>
+ function is called, and just before the interrupts are enabled. For 
+instance, you can use an initialization routine to modify the interrupt 
+flags and avoid that a VBL IRQ is handled before <code>main()</code> is executed. For installing an initialization routine, you have to:
+</p>
+
+<ul>
+	<li>Write a function (say <code>foo()</code>) that takes no parameter, and that returns nothing.
+	</li><li>At link time, specify the name of the initialization routine using the <code>-Wl-g.init=XXX</code> flag (where <code>XXX</code>
+ is the name of your function). Remember that your function will have an
+ initial underscore in assembly. In our example, it will be <code>-Wl-g.init=_foo</code>.
+</li></ul>
+
+<!-- ############################################################ -->
+<hr>
+
+<h2><a name="Changing"></a>Changing Important Addresses</h2>
+
+<p>
+It is possible to change the addresses of some important data at link time using the <code>-Wl-gXXX=YYY</code> flag (where <code>XXX</code> is the name of the data, and <code>YYY</code> is the new address). The addresses that can be changed are:
+</p>
+<pre>  .STACK   : Initial stack address
+  .OAM     : Location of sprite ram (requires 0xA0 bytes)
+  .init    : Initialization routine
+  .irq_VBL : VBL IRQ routine
+  .irq_LCD : LCD IRQ routine
+  .irq_TIM : TIM IRQ routine
+  .irq_SIO : SIO IRQ routine
+  .irq_JOY : JOY IRQ routine
+</pre>
+
+<!-- ############################################################ -->
+<hr>
+
+<h2><a name="Troubleshooting"></a>Troubleshooting</h2>
+
+<h3>Assembly Errors</h3>
+
+<p>
+Messages of the type:
+</p>
+<pre>    u 0226
+    a 0329
+    u 0333
+</pre>
+
+<p>
+are error messages from the assembler. To see where these errors occur, you should produce an assembly listing using the <code>-Wa-l</code>
+ flag of lcc and have a look at this file. If such an error occurs with a
+ file generated by the compiler, send me the C source along with the 
+listing.
+</p>
+
+<h3>Link Errors</h3>
+
+<p>
+Messages of the type:
+</p>
+<pre>    ?ASlink-W-Undefined Global     .count referenced by module Demo
+</pre>
+
+<p>
+are error messages from the linker. An image file is generated, but 
+sould be corrupted. Detailed information about errors can be found in 
+map files (generated using the <code>-Wl-m</code> flag of lcc).
+</p>
+
+<h3>DOS Shell Errors</h3>
+
+<p>
+The DOS shell truncates commmand lines to something like 128 characters.
+ If you have to use a longer line due to the number of flags you pass to
+ the compiler, I strongly encourage you to get <code>bash</code>, a DOS 
+port of Unix Bourne-Again SHell. It is much more powerful than DOS 
+shell, and does not truncate command lines. A better alternative is to 
+get <code>make</code>, a DOS port of the Unix make utility, and use 
+makefiles instead of DOS batch files. Of course, you can get both. They 
+are available as part of <a href="https://web.archive.org/web/19980130181410/http://www.delorie.com/djgpp/">DJGPP</a> (DOS port of GNU C).
+</p>
+
+<!-- ############################################################ -->
+<hr>
+
+<h2><a name="Problems"></a>Known Problems</h2>
+
+<h3>Known problems in GBDK 2.0</h3>
+
+<ul>
+	<li>The maximum number of indexes for an array is 127. This is due to 
+the fact that lcc uses integer values for array indexes. This does not 
+affect statically-initialized arrays like:
+<pre>    UBYTE tiles[] = { 0x00, 0x01, ..., 0xFF };
+</pre>
+	But declaring the following arrays cause a compiler error:
+<pre>    UBYTE tiles[128];
+</pre>
+	Here is the answer sent to me by Dave Hanson, one of the authors of lcc:
+<p>
+<cite>
+This is actually the most serious problem. ANSI C stipulates 32Kb as the
+ maximum size of any object. lcc does indeed assume that an int can hold
+ 16-bit values, because it uses ints to hold sizes (e.g., in type 
+structures). Accepting long array sizes would be no problem, and it 
+would work OK as long as the machine on which lcc runs has 16-bit ints. 
+But changing "int" to "long" for every variable/field that holds a size 
+would be painful and would involve touching every module.
+</cite>
+</p>
+	A workaround for this problem is to declare multiple-dimensions arrays, and to use them as single-dimension arrays:
+<pre>	UBYTE tiles[64][8]; /* This declares an array of 64*8 = 512 unsigned bytes */
+
+	void foo() {
+	  UWORD l;
+	  ((UBYTE *)tiles)[500] = 0;
+	  l = 500;
+	  ((UBYTE *)tiles)[l] = 0;
+	}
+</pre>
+	</li><li>The code generator might crash when working with programs that contains very complex expressions.
+</li></ul>
+
+<h3>Known problems in version 1.1</h3>
+
+<ul>
+	<li>The complement checksum is not set correctly by the linker of GBDK 
+1.1. This means that you won't be able to burn a GBDK image into an 
+EPROM. If you have a SmartCard, you won't notice the problem since the 
+SmartCard transfer software automatically corrects the checksums.
+</li></ul>
+
+<!-- ############################################################ -->
+<hr>
+
+<h2><a name="Links"></a>Links</h2>
+
+<h3>GBDK Ports</h3>
+
+<ul>
+	<li><a href="https://web.archive.org/web/19980130181410/http://www.df.lth.se/~glue/AmigaProjects.html">GBDK for Amiga</a> 
+</li></ul>
+
+<h3>Technical informations on the GameBoy</h3>
+
+<ul>
+	<li><a href="https://web.archive.org/web/19980130181410/http://www.komkon.org/fms/GameBoy/">Nintendo GameBoy Homepage</a> 
+	</li><li><a href="https://web.archive.org/web/19980130181410/http://fly.hiwaay.net/~jfrohwei/gameboy/home.html">Jeff Frohwein's Technical Information Page</a> 
+</li></ul>
+
+<!-- ############################################################ -->
+
+<p>
+<a href="https://web.archive.org/web/19980130181410/http://lsewww.epfl.ch/~felber/emul.html">Back</a>
+</p>
+
+<!-- #include "PF footer.incl" -->
+<hr>
+Last Updated 7-Jan-98, <a href="https://web.archive.org/web/19980130181410/mailto:felber@di.epfl.ch">Pascal Felber</a>
+<!-- end include -->
+
+
+
+
+</body></html>
+<!--
+     FILE ARCHIVED ON 18:14:10 Jan 30, 1998 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 03:47:49 Oct 30, 2022.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+-->
+<!--
+playback timings (ms):
+  captures_list: 133.327
+  exclusion.robots: 0.183
+  exclusion.robots.policy: 0.176
+  RedisCDXSource: 12.355
+  esindex: 0.007
+  LoadShardBlock: 104.385 (3)
+  PetaboxLoader3.resolve: 89.135 (2)
+  PetaboxLoader3.datanode: 204.506 (4)
+  CDXLines.iter: 14.13 (3)
+  load_resource: 452.966
+-->

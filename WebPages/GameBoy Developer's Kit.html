@@ -1,0 +1,917 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252"><script src="GameBoy%20Developer's%20Kit_files/analytics.js" type="text/javascript"></script>
+<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app216.us.archive.org';v.server_ms=386;archive_analytics.send_pageview({});});</script>
+<script type="text/javascript" src="GameBoy%20Developer's%20Kit_files/bundle-playback.js" charset="utf-8"></script>
+<script type="text/javascript" src="GameBoy%20Developer's%20Kit_files/wombat.js" charset="utf-8"></script>
+<script type="text/javascript">
+  __wm.init("https://web.archive.org/web");
+  __wm.wombat("http://lsewww.epfl.ch:80/~felber/GBDK/index.old.html","19980130184353","https://web.archive.org/","web","/_static/",
+	      "886185833");
+</script>
+<link rel="stylesheet" type="text/css" href="GameBoy%20Developer's%20Kit_files/banner-styles.css">
+<link rel="stylesheet" type="text/css" href="GameBoy%20Developer's%20Kit_files/iconochive.css">
+<!-- End Wayback Rewrite JS Include -->
+
+
+<title>GameBoy Developer's Kit</title>
+
+<!--
+Created:	13-Apr-97
+By:			Pascal Felber
+-->
+
+<!-- #include "PF header.incl" -->
+<!-- BASE HREF="http://lsewww.epfl.ch/~felber/GBDK/index.html" -->
+<!-- end include -->
+
+</head>
+<body text="#000000" bgcolor="#FFFFFF"><!-- BEGIN WAYBACK TOOLBAR INSERT -->
+<style type="text/css">
+body {
+  margin-top:0 !important;
+  padding-top:0 !important;
+  /*min-width:800px !important;*/
+}
+</style>
+<script>__wm.rw(0);</script>
+<div id="wm-ipp-base" style="display: block; direction: ltr;" lang="en">
+</div><div id="wm-ipp-print">The Wayback Machine - https://web.archive.org/web/19980130184353/http://lsewww.epfl.ch:80/~felber/GBDK/index.old.html</div>
+<script type="text/javascript">//<![CDATA[
+__wm.bt(675,27,25,2,"web","http://lsewww.epfl.ch/~felber/GBDK/index.old.html","19980130184353",1996,"/_static/",["/_static/css/banner-styles.css?v=fantwOh2","/_static/css/iconochive.css?v=qtvMKcIJ"], false);
+  __wm.rw(1);
+//]]></script>
+<!-- END WAYBACK TOOLBAR INSERT -->
+
+<center>
+<h1>GameBoy Developer's Kit</h1>
+
+<h3>Version 1.1 and 2.0b4</h3>
+</center>
+
+<hr>
+
+<ul>
+  <li><a href="#GBDK">GBDK</a>
+  </li><li><a href="#Changes">Changes</a>
+  </li><li><a href="#Downloading">Downloading and Installing</a>
+  </li><li><a href="#Compiler">The Compiler</a>
+  </li><li><a href="#Assembler">The Assembler</a>
+  </li><li><a href="#Linker">The Linker</a>
+  </li><li><a href="#Libraries">The Libraries</a>
+  </li><li><a href="#Test">The Test and Example Programs</a>
+  </li><li><a href="#Mixing">Mixing C and Assembly</a>
+  </li><li><a href="#Troubleshooting">Troubleshooting</a>
+</li></ul>
+
+<hr>
+
+<h2>News</h2>
+
+GBDK version 2.0b4 is available here for Unix (<a href="https://web.archive.org/web/19980130184353/ftp://ftp-lse.epfl.ch/pub/felber/emulation/gb/GBDK-2.0b4.tar.gz">GBDK-2.0b4.tar.gz</a>)
+and DOS (<a href="https://web.archive.org/web/19980130184353/ftp://ftp-lse.epfl.ch/pub/felber/emulation/gb/GBDK-2.0b4.zip">GBDK-2.0b4.zip</a>). It
+contains part of the new features that will be available in the full
+GBDK 2.0 release. A new documentation will be available soon.
+
+<h3>Bugs in version 1.1</h3>
+
+<ul>
+  <li>The complement checksum is not set correctly by the linker of
+the GBDK 1.1. This means that you won't be able to burn a GBDK image
+into an EPROM. If you have a SmartCard, you won't notice the problem
+since the SmartCard transfer software automatically corrects the
+checksums.  This will be fixed in version 1.5.
+</li></ul>
+
+<h3>Changes in GBDK 2.0b4</h3>
+
+<ul>
+  <li>Fixed a bug that could generate wrong code when using
+  hexadecimal constants.
+  </li><li>A new example (<code>galaxy.c</code>) has been added. It is the
+  C version of the <code>space.s</code> example. <code>sprite.c</code>
+  has been removed.
+  </li><li>Most of the libraries have been split into small modules for
+  reducing final code size.
+</li></ul>
+
+<h3>Changes in GBDK 2.0b3</h3>
+
+<ul>
+  <li>The GBDK can generate multiple-banks images, i.e. images
+  greater than 32kB (see the <code>banks</code> example). For this,
+  you have to:
+  <ul>
+	<li>Place the code for your bank in one or several source
+    files. All of the source file(s) will be in the same bank.
+	</li><li>Compile the source file into an object file, and specify in
+    which bank to locate the code using the <code>-Wf-B#</code>
+    flag (where <code>#</code> is the number of the bank). Note that
+    for specifying bank 0, you must not use this flag.
+	</li><li>Repeat this for all your banks. The maximum number of banks is
+    16.
+	</li><li>Link the object files, and specify the number of banks using
+    the <code>-Wl-y#</code> flag (where <code>#</code> is the
+    number of banks), and the type of MBC used in the cartridge using
+    the <code>-Wl-a#</code> flag (where <code>#</code> is cartridge
+    type code to be located at address 0x147 of the image).
+  </li></ul>
+  Note that bank switching is not automatic. You have to call the
+  <code>switch_bank()</code> function.
+  </li><li>It is possible to set the stack pointer at link time using the
+  <code>-g.STACK=#</code> flag (where <code>#</code> is the address of
+  the stack pointer).
+  </li><li>Several functions (e.g. <code>show_bkg()</code>) have been
+  changed to macros (e.g. <code>SHOW_BKG</code>).
+  </li><li>The <code>delay()</code> function waits exactly 1 millisecond,
+  and the <code>pause()</code> waits 256 milliseconds.
+  </li><li>Linking with the standard libraries is no more required. The
+  <code>lib/gb.lib</code> (<code>lib\gb.lib</code> on DOS) text file
+  contains a list of modules in which to look for undefined
+  symbols. The linker will parse this file, and link your code with
+  the required modules only. The <code>stdio</code> library has been
+  split in several object files, and only necessary modules will be
+  added to your code, thus reducing its size.
+  </li><li>The GBDK distribution can be located anywhere in your system if
+  you use the <code>-Wo-lccdir=GBDK-DIR</code> flag when invoking lcc.
+  </li><li>Bug fixes.
+</li></ul>
+
+<h3>Changes in GBDK 2.0b2</h3>
+
+<ul>
+  <li>Lots of bug fixes.
+  </li><li>The GBDK has to be in the <code>\GBDK-2.0</code> directory on
+  DOS machines.
+</li></ul>
+
+<h3>Changes in GBDK 2.0b1</h3>
+
+<ul>
+  <li>The code generator has been completely rewritten with the new
+  version of lcc. It produces much smaller and more efficient
+  code. The size of the code is generally between 20 and 50%
+  smaller. A number of small optimizations are still to be done.
+  </li><li><b>The size of basic types has been changed:</b>
+  <ul>
+	<li>An <code>int</code> is 8 bits.
+	</li><li>A <code>long</code> is 16 bits.
+  </li></ul>
+  This change was required for the code generator to produce better
+  code, because the Z80 is actually an 8-bit processor.
+  </li><li>The linker generates the complement checksum correctly now.
+  </li><li>The libraries and example programs have been modified for the
+  new code generator.
+</li></ul>
+
+<h3>New features to be included in GBDK 2.0 final</h3>
+
+<ul>
+  <li>New libraries will be added, especially dealing with sound.
+  </li><li>A new documentation will be available.
+</li></ul>
+
+<h3>Known problems in GBDK 2.0</h3>
+
+<ul>
+  <li>1 byte signed comparison is valid only if the difference between
+  the two compared numbers is less than 0x80 (128). 1 byte unsigned
+  comparison does not have this limitation:
+  <pre><code>    if(127 &gt; -1)</code></pre>
+  is not valid (127 - (-1) = 128). It will be treated as an unsigned
+  comparison (127 - 255 = -128).
+
+  <pre><code>    if(126 &gt; -1)</code></pre>
+  is valid (126 - (-1) = 127).
+  </li><li>The code generator might crash when working with programs
+  that contains very complex expressions. The
+  <code>tests/array.c</code> program is one of these programs.
+</li></ul>
+
+<h3>Porting code from GBDK 1.1 to GBDK 2.0</h3>
+
+<ul>
+  <li>Change your <code>int</code> variables to <code>long</code> if
+  they have to be bigger than 255. If they should only contain values
+  between 0 and 255, use an <code>unsigned int</code>; this will be
+  much more efficient.
+  </li><li>If your application uses the <code>drawing</code> library,
+  include the <code>drawing.h</code> header file in your C file rather
+  than the <code>graphics.h</code> header file.
+  </li><li>If your application uses the <code>delay</code> or
+  <code>pause</code> functions, you'll have to adapt your delay
+  values. These functions have been modified, and accept values
+  between 0 and 255 (where 0 means 256).
+</li></ul>
+
+<hr>
+
+<h2><a name="GBDK"></a>What is the GBDK?</h2>
+The name may sound pretentious. But with the GBDK, you can develop your own
+programs for the GB system, either in C or in assembly. The GBDK includes
+a set of libraries for the most common requirements and generates image
+files for use with a real GB or with <a href="https://web.archive.org/web/19980130184353/http://www.cs.umd.edu/users/fms/GameBoy/VGB.html">VGB</a>.
+<h2>Why making development tools for the GB?</h2>
+Because the GB really is a nice system, with lots of good games. It is small,
+cheap, has a good autonomy and is quite powerful. It has even a serial port.
+Further more, it is not only aimed at games. 
+<h2>What is the GBDK composed of?</h2>
+The GBDK is composed of: 
+<ul>
+  <li>A full featured C compiler (with the only limitation that a floating
+point library has yet to be written) 
+  </li><li>An assembler that generates relocatable code 
+  </li><li>A linker that produces GB image files 
+  </li><li>A set of basic libraries, with source code 
+  </li><li>Some example programs in assembly and in C 
+</li></ul>
+Well, I have not written all these programs from scratch. <br>
+<br>
+The compiler is based on <a href="https://web.archive.org/web/19980130184353/http://www.cs.princeton.edu/software/lcc/">lcc</a>,
+a retargetable compiler for ANSI/ISO C. Ther orininal version generates
+code for the SPARC, MIPS R3000, and Intel 386 and its successors. <tt>lcc</tt>
+is in production use at <a href="https://web.archive.org/web/19980130184353/http://www.cs.princeton.edu/">Princeton University</a> and <a href="https://web.archive.org/web/19980130184353/http://www.research.att.com/">AT&amp;T
+Bell Laboratories</a>. The <a href="https://web.archive.org/web/19980130184353/http://www.cs.princeton.edu/software/lcc/lcc.1.html">man page</a> gives
+usage details.<br>
+<br>
+The assembler and the linker are based on public domain programs developed
+by Alan R. Baldwin.<br>
+<h2>Which system does the GBDK run on?</h2>
+The UNIX version of GBDK has been tested on Sun Solaris 2.4 and Linux. The DOS version requires a 386 processor (or higher).
+<h2>Limitations</h2>
+<ul>
+  <li>The C compiler is missing support for floats and doubles (the compiler
+supports them, but libraries are missing. If someone is interested in writing
+them...)
+  </li><li>The linker generates only 32kb images for the time. Generating 64kb
+images is not a problem, but bigger images require bank switching. 
+  </li><li>Do not use -0x8000 (minimum 16-bit signed integer) in divisions. -0x7FFF
+is the limit. 
+</li></ul>
+<h2>Other sites with info on the GB</h2>
+<ul>
+  <li><a href="https://web.archive.org/web/19980130184353/http://www.freeflight.com/fms/GameBoy/">Nintendo GameBoy
+Homepage</a> 
+  </li><li><a href="https://web.archive.org/web/19980130184353/http://fly.hiwaay.net/~jfrohwei/gameboy/home.html">Jeff Frohwein's
+Technical Information Page</a> 
+</li></ul>
+<hr>
+<h2><a name="Changes"></a>Changes</h2>
+<h3>Changes in version 1.1</h3>
+<ul>
+  <li>Removed Xloadimage from the GBDK distribution. It is now available as a
+  separate archive.
+  </li><li>A compiled DOS version is now available (cross-compiled on my Sun Workstation!).
+  </li><li>The libraries and the example programs have been improved.
+  </li><li>The make script has been improved. Compiling on UNIX should be easier.
+  </li><li>Many bugfixes.
+</li></ul>
+<hr>
+<h2><a name="Downloading"></a>Downloading and Installing</h2>
+Installing the GBDK should be easy. You just have to follow these steps:
+<h3>On UNIX</h3>
+You must have at least gcc, gnu make and /bin/csh for building the GBDK.
+<ul>
+  <li>Get the GBKD (<a href="https://web.archive.org/web/19980130184353/ftp://ftp-lse.epfl.ch/pub/felber/emulation/gb/GBDK-1.1.tar.gz">GBDK-1.1.tar.gz</a>) distribution.
+  </li><li>Uncompress it:
+</li></ul>
+<pre><code>    % gzcat GBDK-1.1.tar.gz | tar xf -</code></pre>
+<ul>
+  <li>Go into the GBDK-1.1 directory:
+</li></ul>
+<pre><code>    % cd GBDK-1.1</code></pre>
+<ul>
+  <li>Compile and install the GBDK:
+</li></ul>
+<pre><code>    % ./make_unix</code></pre>
+This will create a directory in your home ($HOME/GBDK) with all the files you
+need in it.
+<ul>
+  <li>Compile the libraries, the examples and the tests:
+</li></ul>
+<pre><code>    % cd $HOME/GBDK/lib
+    % make
+    % cd $HOME/GBDK/examples
+    % make
+    % cd $HOME/GBDK/tests
+    % make</code></pre>
+At that point, you don't need the sources anymore and you can delete them.<p>
+</p><h3>On DOS</h3>
+You must have a DOS Protected Mode Interface (DPMI). For instance, Windows 95
+provides a DPMI. You can also get one <a href="https://web.archive.org/web/19980130184353/ftp://ftp-lse.epfl.ch/pub/felber/emulation/gb/csdpmi3b.zip">here</a>.
+You must also have COMMAND.COM in the root of drive C, and an existing C:\TMP
+directory.
+<ul>
+  <li>Get the GBKD (<a href="https://web.archive.org/web/19980130184353/ftp://ftp-lse.epfl.ch/pub/felber/emulation/gb/GBDK-1.1.zip">GBDK-1.1.zip</a>) distribution.
+  </li><li>Uncompress it in the root of drive C:
+</li></ul>
+<pre><code>    C:&gt; unzip -d GBDK-1.1.zip</code></pre>
+This will create a directory (C:\GBDK) with all the files you need in it.
+<ul>
+  <li>Compile the libraries, the examples and the tests:
+</li></ul>
+<pre><code>    C:&gt; cd C:\GBDK\lib
+    C:&gt; make.bat
+    C:&gt; cd C:\GBDK\examples
+    C:&gt; make.bat
+    C:&gt; cd  C:\GBDK\tests
+    C:&gt; make.bat</code></pre>
+<hr>
+<h2><a name="Compiler"></a>The Compiler</h2>
+I've written a code generator for <code>lcc</code> that generates code for
+the Z80. It does not produce optimal code, but it is usable. It took a long
+time to debug, but I think it is now quite stable. Note than due to the
+limitations of the Z80, <code>sizeof(int) = sizeof(long) = 2</code>.<br>
+<br>
+For more information, read the docs included with the <code>lcc</code> distribution.<br>
+<br>
+The following flags allow to pass options to the assembler and to the linker:
+<pre><code>    -Wa</code> 
+<code>    -Wl</code> </pre>
+If the assembler generates an error message, you can produce an assembly
+listing <code>.lst</code> to see where the error occurs using the flag:
+<pre><code>    -Wa-l</code> </pre>
+If you want to see the memory mop of the image file (where the functions
+are located in ROM), you can produce a <code>.map</code> file using: 
+<pre><code>    -Wl-m</code> </pre>
+<hr>
+<h2><a name="Assembler"></a>The Assembler</h2>
+The GB processor is very similar to the Z80, although some of the instructions
+are missing and some ther have been added. Also, she second set of registers
+(BC', DE', HL', AF') and the index registers (IX, IY) are missing and, consequently,
+there are no DD and FD opcode tables. Finally, I/O ports are gone and so
+are all IN/OUT opcodes.<br>
+<br>
+Changed instructions (from the GameBoy FAQ, by Marat Fayzullin):
+<pre><code>    08 xx xx   EX AF,AF'      LD (word),SP     Save SP at given address
+    10 xx      DJNZ offset    STOP             Meaning unknown
+    22         LD (word),HL   LD (HLI),A       Save A at (HL) and increment HL
+    2A         LD HL,(word)   LD A,(HLI)       Load A from (HL) and increment HL
+    32         LD (word),A    LD (HLD),A       Save A at (HL) and decrement HL
+    3A         LD A,(word)    LD A,(HLD)       Load A from (HL) and decrement HL
+    D3         OUTA (byte)    No operation
+    D9         EXX            RETI             Enable interrupts and return
+    DB         INA (byte)     No operation
+    DD         Prefix DD      No operation
+    E0 xx      RET PO         LD (byte),A      Save A at (FF00+byte)
+    E2         JP PO,word     LD (C),A         Save A at (FF00+C)
+    E3         EX HL,(SP)     No operation
+    E4         CALL PO,word   No operation
+    E8 xx      RET PE         ADD SP,offset    Add signed offset to SP
+    EA xx xx   JP PE,word     LD (word),A      Save A at given address
+    EB         EX DE,HL       No operation
+    EC         CALL PE,word   No operation
+    F0 xx      RET P          LD A,(byte)      Load A from (FF00+byte)
+    F2         JP P,word      No operation
+    F4         CALL P,word    No operation
+    F8 xx      RET M          LDHL SP,offset   Load HL with SP + signed offset
+    FA xx xx   JP M,word      LD A,(word)      Load A from given address
+    FC         CALL M,word    No operation
+    FD         Prefix FD      No operation</code></pre>
+I have also modified the name of some of the GB-specific opcodes:
+<pre><code>    LD (HLI),A      -&gt; LD (HL+),A
+    LD (HLD),A      -&gt; LD A,(HL-)
+    LD A,(HLI)      -&gt; LD (HL+),A
+    LD A,(HLD)      -&gt; LD A,(HL-)
+    ADD SP,offset   -&gt; LDA SP,offset(SP)
+    LDHL SP,offset  -&gt; LDA HL,offset(SP)</code></pre>
+The <code>LDA</code> opcode means "load address", like in 68x00
+assembly. I've called these instructions like this because both are orthogonal
+(they do the same thing on two different registers), and anyway I hate the
+<code>LDHL</code> (just because the destination register is specified in
+the opcode).<br>
+<br>
+The assembler accepts the following flags:
+<pre><code>    Usage: [-vdqxcgalosf] [-n filename] file1 [file2 file3 ...]
+      v    verbose
+      d    decimal  listing
+      q    octal    listing
+      x    hex      listing (default)
+      k    case sensitive
+      g    undefined symbols made global
+      a    all user symbols made global
+      l    create list   output file[LST]
+      o    create object output file[O]
+      s    create symbol output file[SYM]
+      f    flag relocatable references by  `   in listing file
+     ff    flag relocatable references by mode in listing file
+      n    name of output files (for following input file)</code></pre>
+For more information, read the <code>asmlnk.doc</code> file in the <code>doc</code>
+directory.
+<hr>
+<h2><a name="Linker"></a>The Linker</h2>
+The linker accepts the following flags:
+<pre><code>    Usage: [-options] -o outfile [file.o ... | @file.lst]
+      @file.lst      file with list of files to link, separated by newlines
+      -c             case sensitive
+      -v             verbose
+    Relocation:
+      -b             area base address = expression
+      -g             global symbol = expression
+    Map format:
+      -m             map output generated as file[MAP]
+      -x             hexidecimal (default)
+      -d             decimal
+      -q             octal
+    Output:
+      -i             Intel hex as file[IHX]
+      -s             Motorola s19 as file[S19]
+      -z             Gameboy image as file[GB]</code></pre>
+For more information, read the <code>asmlnk.doc</code> file in the <code>doc</code>
+directory.
+<hr>
+<h2><a name="Libraries"></a>The Libraries</h2>
+Three libraries are included in the GBDK. Their functions are described
+in details below. 
+<h3>crt0.o</h3>
+Basic C runtime, with GB initialization routines, C support (<code>mul</code>,
+<code>div</code>, <code>mod</code>) and other essential things. This library
+is automatically linked with every program. 
+<h3>terminal.o - stdio.o</h3>
+Libraries for basic text input/output. Implements standard functions from
+<code>stdio</code>, <code>ctype</code> and <code>string</code>. 
+<h3>drawing.o</h3>
+Very primitive graphic library that allows to draw points to the screen,
+and to display images. The drawing area is limited because of the way the
+GB handles display.<br>
+<br>
+<hr>
+<h3>stdlib.o</h3>
+<h4>Include files</h4>
+<ul>
+  <li>stdlib.h 
+</li></ul>
+<h4>Source files</h4>
+<ul>
+  <li>crt0.s 
+</li></ul>
+<h4>Functions</h4>
+<pre><code>void mode(int m);</code></pre>
+<dl>
+  <dd>Change current working mode (<code>M_DRAWING</code> or <code>M_TEXT</code>).
+This is normally implicitely done when using library functions. 
+</dd></dl>
+<pre><code>void delay(int d);</code></pre>
+<dl>
+  <dd>Small pause. 
+</dd></dl>
+<pre><code>void pause(int p);</code></pre>
+<dl>
+  <dd>Longer pause. 
+</dd></dl>
+<pre><code>int joypad();</code></pre>
+<dl>
+  <dd>Read the joypad status. Joypad keys are <code>J_START</code>, <code>J_SELECT</code>,
+<code>J_B</code>, <code>J_A</code>, <code>J_DOWN</code>, <code>J_UP</code>,
+<code>J_LEFT</code> and <code>J_RIGHT</code>. 
+</dd></dl>
+<pre><code>int waitpad(int mask);</code></pre>
+<dl>
+  <dd>Wait for one of the specified joypad keys to be pressed. 
+</dd></dl>
+<pre><code>void waitpadup();</code></pre>
+<dl>
+  <dd>Wait for the joypad to be released. 
+</dd></dl>
+<pre><code>void enable_interrupts();
+void disable_interrupts();</code></pre>
+<dl>
+  <dd>Enable or Disable interrupts (must be enabled for displaying sprites).
+</dd></dl>
+<pre><code>void display_on();
+void display_off();</code></pre>
+<dl>
+  <dd>Switch screen on or off. 
+</dd></dl>
+<pre><code>void show_bkg();
+void hide_bkg();</code></pre>
+<dl>
+  <dd>Show or hide the background display. 
+</dd></dl>
+<pre><code>void set_bkg_data(int first_tile, int nb_tiles, unsigned char *data);</code></pre>
+<dl>
+  <dd>Set the data of part of the background tiles. 
+</dd></dl>
+<menu><code>-128 &lt;= first_tile &lt;= 127</code> <br>
+<code>-128 &lt;= first_tile+nb_tiles &lt;= 127</code> <br>
+<br>
+<code>nb_tiles &gt;= 1</code> 
+</menu>
+<pre><code>void set_bkg_tiles(int x, int y, int w, int h, unsigned char *tilelist);</code></pre>
+<dl>
+  <dd>Set the tile number of part of the background. 
+</dd></dl>
+<menu><code>0 &lt;= x &lt;= 31</code> <br>
+<code>0 &lt;= y &lt;= 31</code> <br>
+<code>1 &lt;= w &lt;= 32-x</code> <br>
+<br>
+<code>1 &lt;= h &lt;= 32-y</code> 
+</menu>
+<pre><code>void scroll_bkg(int x, int y);</code></pre>
+<dl>
+  <dd>Scroll the background (relative to current position). 
+</dd></dl>
+<pre><code>void show_window();
+void hide_window();</code></pre>
+<dl>
+  <dd>Show or hide the window display. 
+</dd></dl>
+<pre><code>void show_sprites();
+void hide_sprites();</code></pre>
+<dl>
+  <dd>Show or hide the sprites display. 
+</dd></dl>
+<pre><code>void sprites8x8();
+void sprites8x16();</code></pre>
+<dl>
+  <dd>Set the size of all sprites. 
+</dd></dl>
+<pre><code>void set_sprite_data(int first_tile, int nb_tiles, unsigned char *data);</code></pre>
+<dl>
+  <dd>Set the data of part of the sprite tiles. 
+</dd></dl>
+<menu><code>0 &lt;= first_tile &lt;= 255</code> <br>
+<code>0 &lt;= first_tile+nb_tiles &lt;= 255</code> <br>
+<br>
+<code>nb_tiles &gt;= 1</code> 
+</menu>
+<pre><code>void set_sprite_tile(int nb, int tile);</code></pre>
+<dl>
+  <dd>Set the tile number of a sprite. 
+</dd></dl>
+<menu><code>0 &lt;= nb &lt;= 39</code> <br>
+<br>
+<code>0 &lt;= tile &lt;= 255</code> 
+</menu>
+<pre><code>void set_sprite_prop(int nb, int prop);</code></pre>
+<dl>
+  <dd>Set the properties of a sprite. Sprite properties bits are <code>S_PALETTE</code>,
+<code>S_FLIPX</code>, <code>S_FLIPY</code> and <code>S_PRIORITY</code>.
+</dd></dl>
+<menu><code>0 &lt;= nb &lt;= 39</code> 
+</menu>
+<pre><code>void move_sprite(int nb, int x, int y);</code></pre>
+<dl>
+  <dd>Change the position of a sprite. 
+</dd></dl>
+<menu><code>0 &lt;= nb &lt;= 39</code> <br>
+<code>0 &lt;= x &lt;= 255</code> <br>
+<br>
+<code>0 &lt;= y &lt;= 255</code> 
+</menu>
+<hr>
+<h3><code>stdio.o - terminal.o</code></h3>
+<h4>Include files</h4>
+<ul>
+  <li><code>stdio</code>.h 
+</li></ul>
+<h4>Source files</h4>
+<ul>
+  <li><code>stdio.c</code> 
+  </li><li><code>terminal.s</code> 
+</li></ul>
+<h4>Functions</h4>
+<pre><code>int atoi(char *s);</code></pre>
+<dl>
+  <dd>Return the integer value of a numeric string. 
+</dd></dl>
+<pre><code>int abs(int num);</code></pre>
+<dl>
+  <dd>Return the absolute value of an integer. 
+</dd></dl>
+<pre><code>int isalpha(char c);
+int isupper(char c);
+int islower(char c);
+int isdigit(char c);
+int isspace(char c);</code></pre>
+<dl>
+  <dd>Functions that classify character-coded integer values. 
+</dd></dl>
+<pre><code>int toupper(char c);
+int tolower(char c);</code></pre>
+<dl>
+  <dd>Change character case 
+</dd></dl>
+<pre><code>int index(char *s, char *t);</code></pre>
+<dl>
+  <dd>Find index of string t in s. 
+</dd></dl>
+<pre><code>char *itoa(int n, char *s);</code></pre>
+<dl>
+  <dd>Transform an integer in its ascii representation. 
+</dd></dl>
+<pre><code>void printn(int number, int radix);</code></pre>
+<dl>
+  <dd>Print a number in any radix. 
+</dd></dl>
+<pre><code>char *reverse(char *s);</code></pre>
+<dl>
+  <dd>Reverse a character string. 
+</dd></dl>
+<pre><code>char *strcat(char *s1, char *s2);</code></pre>
+<dl>
+  <dd>Concatenate <code>s2</code> on the end of <code>s1</code>. <code>s1</code>
+must be large enough. Return <code>s1</code>. 
+</dd></dl>
+<pre><code>int strcmp(char *s1, char *s2);</code></pre>
+<dl>
+  <dd>Compare strings: 
+</dd></dl>
+<menu><code>s1&gt;s2: &gt;0</code> <br>
+<code>s1==s2: 0</code> <br>
+<br>
+<code>s1&lt;s2: &lt;0</code> 
+</menu>
+<pre><code>char *strcpy(char *s1, char *s2);</code></pre>
+<dl>
+  <dd>Copy string <code>s2</code> to <code>s1</code>. <code>s1</code> must
+be large enough. Return <code>s1</code>. 
+</dd></dl>
+<pre><code>int strlen(char *s);</code></pre>
+<dl>
+  <dd>Return length of string. 
+</dd></dl>
+<pre><code>char *strncat(char *s1, char *s2, int n);</code></pre>
+<dl>
+  <dd>Concatenate <code>s2</code> on the end of <code>s1</code>. <code>s1</code>
+must be large enough. At most <code>n</code> characters are moved. Return
+<code>s1</code>. 
+</dd></dl>
+<pre><code>int strncmp(char *s1, char *s2, int n);</code></pre>
+<dl>
+  <dd>Compare strings (at most <code>n</code> bytes): 
+</dd></dl>
+<menu><code>s1&gt;s2: &gt;0</code> <br>
+<code>s1==s2: 0</code> <br>
+<br>
+<code>s1&lt;s2: &lt;0</code> 
+</menu>
+<pre><code>char *strncpy(char *s1, char *s2, int n);</code></pre>
+<dl>
+  <dd>Copy <code>s2</code> to <code>s1</code>, truncating or null-padding
+to always copy <code>n</code> bytes. Return <code>s1</code>. 
+</dd></dl>
+<pre><code>void puts(char *str);</code></pre>
+<dl>
+  <dd>Print a string with a carriage return. 
+</dd></dl>
+<pre><code>void print(char *str);</code></pre>
+<dl>
+  <dd>Print a string without carriage return. 
+</dd></dl>
+<pre><code>void printf(char *fmt, ...);
+int scanf(char *fmt, ...);</code></pre>
+<dl>
+  <dd>Print a fromatted string. <code>printf</code> and <code>scanf</code>
+support the following types: 
+</dd></dl>
+<menu><code>%c char<br>
+%d decimal int<br>
+%o octal int<br>
+%p pointer<br>
+%s string<br>
+</code><br>
+<code>%x hexadecimal int</code>
+</menu>
+<dl>When waiting for a user input, a kind of keyboard appears at the bottom
+of the screen, which allows to enter characters. The following buttons are
+used: 
+</dl>
+<menu><code>Arrow keys: Move the cursor<br>
+A: Enter a character<br>
+B: Delete a character<br>
+START: End of line (carriage return)<br>
+SELECT: Temporarily hide the keyboard<br></code>
+</menu>
+<pre><code>void putchar(char c);</code></pre>
+<dl>
+  <dd>Print a character. 
+</dd></dl>
+<pre><code>char getchar();</code></pre>
+<dl>
+  <dd>Read a character. 
+</dd></dl>
+<pre><code>char *gets(char *s);</code></pre>
+<dl>
+  <dd>Read a string. 
+</dd></dl>
+<pre><code>void gotoxy(int x, int y);</code></pre>
+<dl>
+  <dd>Move the cursor to a specific position 
+</dd></dl>
+<pre><code>int posx();
+int posy();</code></pre>
+<dl>
+  <dd>Return the current cursor position 
+</dd></dl>
+<pre><code>void setchar(char c);</code></pre>
+<dl>
+  <dd>Set the character at cursor position, without character interpretation
+(<code>'\n'</code> does not move to the next line) and without moving the
+cursor. 
+</dd></dl>
+<hr>
+<h3>drawing.o</h3>
+<h4>Include files</h4>
+<ul>
+  <li><code>graphics.h</code> 
+</li></ul>
+<h4>Source files</h4>
+<ul>
+  <li><code>drawing.s</code> 
+</li></ul>
+<h4>Functions</h4>
+<pre><code>void plot(int x, int y, int color, int mode);</code></pre>
+<dl>
+  <dd>Draw a pixel on screen with specific color and mode. Colors are <code>WHITE</code>,
+<code>LTGREY</code>, <code>DKGREY</code> and <code>BLACK</code>. Modes are
+<code>AND</code>, <code>OR</code>, <code>XOR</code> and <code>SOLID</code>.
+</dd></dl>
+<pre><code>void draw_image(unsigned char *data);</code></pre>
+<dl>
+  <dd>Draws a complete image to screen. Image size must be 0x80 * 0x78 pixels.
+</dd></dl>
+<hr>
+<h2><a name="Test"></a>The Test and Example Programs</h2>
+The test programs are located in the <code>tst</code> directory. Most of
+them are taken from the <code>lcc</code> distribution. Expected output are
+located in the <code>.out</code> files.
+<h3><code>8q.c</code></h3>
+<dl>
+  <dd>The classic 8 queens problem (place 8 queens on a chessboard so that
+none of them threaten the others).
+</dd></dl>
+<h3><code>array.c</code></h3>
+<dl>
+  <dd>Test program with arrays.
+</dd></dl>
+<h3><code>init.c</code></h3>
+<dl>
+  <dd>Test program with variable initializations.
+</dd></dl>
+<h3><code>sort.c</code></h3>
+<dl>
+  <dd>Sorting algorithm that uses arrays and pointers.
+</dd></dl>
+<h3><code>struct.c</code></h3>
+<dl>
+  <dd>Test program with structures.
+</dd></dl>
+<h3><code>test.c</code></h3>
+<dl>
+  <dd>Test program for terminal and drawing libraries.
+</dd></dl>
+There are also three interesting sample programs in the examples directory:<br>
+<h3><code>space.s</code></h3>
+<dl>
+  <dd>Assembly program that demonstrates the use of sprites, window, background,
+fixed-point values and more. The following keys are used:
+</dd></dl>
+<menu><code>Arrow keys: Change the speed (and direction) of the sprite<br>
+Arrow keys+A: Change the speed (and direction) of the window<br>
+Arrow keys+B: Change the speed (and direction) of the background<br>
+START: Open/close the door<br>
+SELECT: Basic fading effect<br></code>
+</menu>
+<h3><code>sound.c</code></h3>
+<dl>
+  <dd>Program for experimenting with the soung generator of the GB (to use on
+a real GB). The four different sound modes of the GB are available. It also
+demonstrates the use of bit fields in C (it's a quick hack, so don't expect too
+much from the code). The following keys are used:
+</dd></dl>
+<menu><code>UP/DOWN: Move the cursor<br>
+RIGHT/LEFT: Increment/decrement the value<br>
+RIGHT/LEFT+A: Increment/decrement the value by 10<br>
+RIGHT/LEFT+B: Set the value to maximum/minimum<br>
+START: Play the current mode's sound (or all modes if in control screen)<br></code>
+START+A: Play a little music with the current mode's sound<br>
+SELECT: Change the sound mode (1, 2, 3, 4 and control)<br>
+SELECT+A: Dump the sound registers to the screen<br>
+</menu>
+<h3><code>sprite.c</code></h3>
+<dl>
+  <dd>Program that demonstrates the use of sprinte form C.
+</dd></dl>
+<h3><code>rpn.c</code></h3>
+<dl>
+  <dd>Basic RPN calculator. Try entering expressions like <code>12 134*</code>
+and then <code>1789+</code>.
+</dd></dl>
+<hr>
+<h2><a name="Mixing"></a>Mixing C and Assembly</h2>
+For mixing C and assembly, you must use different files (you cannot embed
+C code with assembly) and link them together. Here are the things you must
+know:
+<ul>
+  <li>A C identifier <code>i</code> will be called <code>_i</code> in assembly
+  </li><li>Results are always returned into the <code>HL</code> register
+  </li><li>Parameters are always passed on the stack (starting at <code>SP+2</code>
+because the return address is also saved on the stack)
+  </li><li>Assembly identifier are exported using the <code>.globl</code> directive
+  </li><li>You can access GameBoy hardware registers using <code>_reg_XX</code>
+  where <code>XX</code> is the register number (see <code>sound.c</code> for an
+  real example)
+  </li><li>Registers must be preserved across function calls (you must store
+them at function begin, and restore them at the end), except <code>HL</code>.
+</li></ul>
+Here is an example of how to mix assembly with C:
+<h3><code>main.c</code></h3>
+<pre><code>    main()
+    {
+      int i;
+      int add(int, int);
+
+      i = add(1, 3);
+    }</code></pre>
+<h3><code>add.s</code></h3>
+<pre><code>    .globl _add
+    _add:           ; int add(int a, int b)
+      PUSH BC       ; Save used registers (except HL)
+      PUSH DE
+      LDA  HL,2(SP)
+      LD   C,(HL)   ; Get a
+      INC  HL
+      LD   B,(HL)
+      INC  HL
+      LD   E,(HL)   ; Get b
+      INC  HL
+      LD   D,(HL)
+      LD   H,D      ; Move DE into HL
+      LD   L,E
+      ADD  HL,BC    ; Add BC to HL
+      POP  DE       ; Restore registers
+      POP  BC
+      RET	           ; Return result into HL</code></pre>
+<hr>
+<h2><a name="Troubleshooting"></a>Troubleshooting</h2>
+<h3>Errors</h3>
+Messages of the type:
+<pre><code>    u 0226
+    a 0329
+    u 0333</code></pre>
+are error messages from the assembler. To see where these errors occur,
+you should produce an assembly listing using the <code>-Wa-l</code> flag
+of <code>lcc</code>. An object file is generated, but must be corrupted.
+For more information on the different types of errors, read the <code>asmlnk.doc</code>
+file in the <code>doc</code> directory.<br>
+<br>
+Messages of the type:
+<pre><code>    ?ASlink-W-Undefined Global     .count referenced by module     Demo</code></pre>
+are error messages from the linker. You probably forgot a library when linking,
+An image file is generated, but must be corrupted.
+<h3>Warnings</h3>
+<ul>
+  <li>Do not declare initialized variables at the file level, except when
+they are read-only, because they will be located in ROM, e.g. 
+</li></ul>
+<pre><code>    int i1;          /* OK    : will be located in RAM */</code> 
+<code>    char *s1;        /* OK    : will be located in RAM */</code> 
+<code>    int i2 = 0;      /* Error : will be located in ROM */</code> 
+<code>    char *s2 = "Hi"; /* Error : will be located in ROM */</code> 
+<code>
+    void main() { ... }</code> </pre>
+<ul>
+  <li>Both <code>terminal.o</code> and <code>drawing.o</code> libraries
+use a lot of tiles and sprites from the GB. You should not use your own
+tiles or sprites with these libraries.
+  </li><li>If you use both libraries in a same program, keep in mind that there
+will be a "mode switch" when using a function from a library after
+one of the other and all your work will be lost (if in drawing mode you
+use a terminal function, your drawing will be lost).
+</li></ul>
+
+<p>
+<a href="https://web.archive.org/web/19980130184353/http://lsewww.epfl.ch/~felber/index.html">Back</a>
+</p>
+
+<!-- #include "PF footer.incl" -->
+<hr>
+Last Updated 18-Apr-97, <a href="https://web.archive.org/web/19980130184353/mailto:felber@di.epfl.ch">Pascal Felber</a>
+<!-- end include -->
+
+
+
+
+</body></html>
+<!--
+     FILE ARCHIVED ON 18:43:53 Jan 30, 1998 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 03:48:22 Oct 30, 2022.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+-->
+<!--
+playback timings (ms):
+  captures_list: 263.097
+  exclusion.robots: 0.191
+  exclusion.robots.policy: 0.183
+  cdx.remote: 0.085
+  esindex: 0.01
+  LoadShardBlock: 229.61 (3)
+  PetaboxLoader3.datanode: 199.311 (4)
+  CDXLines.iter: 18.953 (3)
+  load_resource: 114.809
+  PetaboxLoader3.resolve: 69.637
+-->
