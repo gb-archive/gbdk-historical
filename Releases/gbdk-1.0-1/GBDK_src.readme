@@ -1,0 +1,184 @@
+Short:    Sources for GBDK V1.0 rev. 1
+Author:   glue@df.lth.se <Lars Malmborg>
+Uploader: glue@df.lth.se <Lars Malmborg>
+Version:  1.0
+Type:     dev/cross
+
+This is the source code for the Amiga port of GBDK.
+GBDK (GameBoy Developer's Kit) is a full environment for developing software
+for GameBoy and hence Virtual GameBoy (Aminet:misc/emu/AmigaVGB.lha).
+This is an Amiga port of the UN*X version with some minor modifications.
+Included is an ANSI C compiler, assembler, linker and and an easy to use
+front-end as well as a bitmap converter to convert ILBM's to tiles used by
+GameBoy. I've also tried to merge all information on GameBoy programming
+into an AmigaGuide.
+Why is this cool?
+Some link libraries are included, so among others, printf() and scanf() is
+supported!
+
+
+============================= Archive contents =============================
+
+Original  Packed Ratio    Date     Time    Name
+-------- ------- ----- --------- --------  -------------
+    3213    1024 68.1% 11-Sep-96 16:48:02 +asdata.c
+    5842    1839 68.5% 27-Feb-96 22:47:58 +asexpr.c
+    2233     906 59.4% 11-Sep-96 16:00:58 +aslex.c
+    6931    2034 70.6% 27-Feb-96 22:47:58 +aslist.c
+    8678    2738 68.4% 11-Sep-96 16:48:36 +asm.h
+   10676    3406 68.0% 03-Oct-96 12:17:58 +asmain.c
+    4958    1486 70.0% 27-Feb-96 22:48:00 +asmtst.asm
+    7054    2010 71.5% 27-Feb-96 22:48:00 +asout.c
+     991     509 48.6% 05-Apr-96 20:39:30 +assubr.c
+    3667    1368 62.6% 27-Feb-96 22:48:00 +assym.c
+     277     161 41.8% 17-Sep-96 21:32:52 +SCOPTIONS
+     757     249 67.1% 17-Sep-96 21:30:36 +smakefile
+   24245    4876 79.8% 24-Mar-96 18:01:36 +tz80.asm
+    2382     950 60.1% 27-Feb-96 22:48:00 +z80.h
+    3855    1280 66.7% 27-Feb-96 22:48:00 +z80adr.c
+     280     204 27.1% 27-Feb-96 22:48:00 +z80ext.c
+    9784    2376 75.7% 11-Sep-96 16:09:12 +z80mch.c
+    3979    1019 74.3% 24-Mar-96 18:01:16 +z80pst.c
+       0       0  0.0% 06-Oct-96 14:59:36 +
+  142678   32058 77.5% 05-Apr-96 20:39:30 +asmlnk.doc
+   85788   24370 71.5% 02-Oct-96 14:13:40 +GBDK.guide
+     168      87 48.2% 02-Oct-96 13:41:58 +make
+    1330     532 60.0% 16-Apr-96 12:23:58 +rpn.c
+   23092    3894 83.1% 08-May-96 08:35:10 +sound.c
+   35911    5319 85.1% 18-Sep-96 11:46:00 +space.s
+    8741    1891 78.3% 03-Jun-96 13:14:22 +sprite.c
+     773     456 41.0% 06-Oct-96 15:03:48 +GBDK-src.readme
+     661     279 57.7% 28-Sep-93 15:40:40 +compiler.h
+    3036    1141 62.4% 28-Sep-93 15:40:40 +debug.h
+    5036    2042 59.4% 28-Sep-93 15:40:40 +iff.h
+   10332    2268 78.0% 28-Sep-93 15:40:40 +iffpstrings.h
+   11081    4048 63.4% 28-Sep-93 15:40:40 +ilbm.h
+    3525    1483 57.9% 28-Sep-93 15:40:40 +ilbmapp.h
+    1588     719 54.7% 28-Sep-93 15:40:42 +packer.h
+   26156   15111 42.2% 27-Sep-96 17:50:48 +ILBMtoGB
+   12196    4017 67.0% 27-Sep-96 17:50:18 +ILBMtoGB.c
+    8654    3029 64.9% 26-Sep-96 19:01:20 +ILBMtoGB.c.old
+    4832    1940 59.8% 28-Sep-93 15:40:32 +ILBMtoRaw.c
+     194     116 40.2% 28-Sep-93 15:40:32 +ILBMtoRaw_rev.h
+       3       3  0.0% 28-Sep-93 15:40:32 +ilbmtoraw_rev.rev
+    1694     970 42.7% 25-Sep-96 17:04:02 +JAS.iff
+    7116    1389 80.4% 26-Sep-96 23:05:38 +JAS.iff.c
+    3692    1499 59.3% 28-Sep-93 15:40:40 +getbitmap.c
+    3637    1544 57.5% 28-Sep-93 15:40:38 +iffpstrings.c
+   15678    5368 65.7% 28-Sep-93 15:40:40 +ilbmr.c
+    5694    1711 69.9% 28-Sep-93 15:40:40 +loadilbm.c
+   10592    3885 63.3% 25-Sep-96 13:58:42 +parse.c
+    2115     891 57.8% 28-Sep-93 15:40:40 +unpacker.c
+    3956    2264 42.7% 27-Sep-96 17:08:40 +ren.iff
+   18819    3105 83.5% 27-Sep-96 17:08:46 +ren.iff.c
+     277     161 41.8% 27-Sep-96 21:27:10 +SCOPTIONS
+     930     239 74.3% 27-Sep-96 21:26:42 +smakefile
+     760     233 69.3% 25-Sep-96 18:28:24 +Test.iff
+    2119     284 86.5% 26-Sep-96 23:35:48 +Test.iff.asm
+    2056     308 85.0% 26-Sep-96 23:32:06 +Test.iff.c
+     242     162 33.0% 03-Apr-96 21:43:48 +graphics.h
+     424     211 50.2% 26-Feb-96 22:12:18 +stdarg.h
+     955     336 64.8% 16-Apr-96 08:52:42 +stdio.h
+    1986     540 72.8% 06-May-96 12:03:52 +stdlib.h
+    2642    1168 55.7% 18-Sep-96 11:11:02 +amiga.c
+    5924    2058 65.2% 02-Feb-96 21:19:48 +cpp.c
+    4582    1794 60.8% 15-Sep-96 13:38:16 +cpp.h
+    9815    2901 70.4% 02-Feb-96 21:19:48 +eval.c
+    1044     439 57.9% 15-Sep-96 02:58:02 +getopt.c
+    1940     794 59.0% 02-Feb-96 21:19:48 +hideset.c
+    2692    1120 58.3% 15-Sep-96 13:39:48 +include.c
+   12301    4204 65.8% 02-Feb-96 21:19:50 +lex.c
+   10567    3795 64.0% 02-Feb-96 21:19:50 +macro.c
+    2042     896 56.1% 02-Feb-96 21:19:50 +nlist.c
+     277     161 41.8% 17-Sep-96 21:32:52 +SCOPTIONS
+     583     214 63.2% 17-Sep-96 21:38:28 +smakefile
+    6580    2425 63.1% 15-Sep-96 13:40:34 +tokens.c
+    2332    1058 54.6% 02-Feb-96 21:19:50 +unix.c
+    1663     854 48.6% 02-Feb-96 21:19:52 +bprint.1
+   36557   12774 65.0% 20-Dec-95 20:34:22 +install.txt
+   13122    5268 59.8% 02-Feb-96 21:19:52 +lcc.1
+    1569     672 57.1% 16-Sep-96 22:50:54 +acc.c
+    2410     885 63.2% 21-Jun-94 22:18:06 +bbexit.c
+     683     364 46.7% 08-Dec-94 19:30:40 +bc4.c
+   12229    3786 69.0% 02-Feb-96 21:19:12 +bprint.c
+     793     221 72.1% 17-Sep-96 21:07:42 +dolcc.bat
+     602     307 49.0% 20-Sep-96 18:01:32 +gb.c
+   14686    4911 66.5% 02-Feb-96 21:19:52 +lcc-pc.c
+   15824    5183 67.2% 16-Sep-96 23:38:28 +lcc-unix.c
+   15167    5044 66.7% 26-Sep-96 22:35:26 +lcc.c
+     277     161 41.8% 20-Sep-96 16:15:54 +SCOPTIONS
+     164     102 37.8% 17-Sep-96 21:29:34 +smakefile
+    1850     673 63.6% 02-Feb-96 21:18:54 +alloc.c
+     221     141 36.1% 27-Sep-96 20:21:24 +bind.c
+   19742    5641 71.4% 27-Sep-96 20:25:48 +c.h
+    2803     910 67.5% 02-Feb-96 21:19:20 +config.h
+   19476    4938 74.6% 02-Feb-96 21:18:58 +dag.c
+   30183    8575 71.5% 02-Feb-96 21:19:00 +decl.c
+   13680    3887 71.5% 02-Feb-96 21:19:00 +enode.c
+    2431     990 59.2% 27-Sep-96 20:40:40 +error.c
+     445     242 45.6% 02-Feb-96 21:19:04 +event.c
+   17877    4987 72.1% 02-Feb-96 21:19:02 +expr.c
+  141199   19823 85.9% 27-Sep-96 20:17:06 +gbZ80.c
+   21172    5718 72.9% 02-Feb-96 21:19:22 +gen.c
+   11642    3445 70.4% 02-Feb-96 21:19:04 +init.c
+    2983    1093 63.3% 02-Feb-96 21:19:04 +input.c
+     121      91 24.7% 08-Dec-94 22:11:04 +lccn.bat
+   19817    4577 76.9% 02-Feb-96 21:19:06 +lex.c
+    1002     461 53.9% 02-Feb-96 21:19:08 +list.c
+    5693    2042 64.1% 29-Sep-96 17:45:12 +main.c
+    1956     607 68.9% 02-Feb-96 21:18:56 +null.c
+    4360    1237 71.6% 02-Feb-96 21:19:48 +Old_makefile
+    3969    1303 67.1% 27-Sep-96 20:45:14 +output.c
+    6181    1970 68.1% 02-Feb-96 21:19:10 +prof.c
+    7235    2262 68.7% 02-Feb-96 21:19:10 +profio.c
+     291     169 41.9% 20-Sep-96 16:57:50 +SCOPTIONS
+   16846    3885 76.9% 02-Feb-96 21:19:12 +simp.c
+    1285     407 68.3% 27-Sep-96 20:17:56 +smakefile
+   17208    5004 70.9% 02-Feb-96 21:19:14 +stmt.c
+    4283    2209 48.4% 02-Feb-96 21:19:14 +string.c
+    6326    2128 66.3% 02-Feb-96 21:19:14 +sym.c
+    8815    2838 67.8% 02-Feb-96 21:18:56 +symbolic.c
+    7561    1422 81.1% 02-Feb-96 21:19:06 +token.h
+    4534    1709 62.3% 02-Feb-96 21:19:16 +trace.c
+    4960    1818 63.3% 02-Feb-96 21:19:16 +tree.c
+   18790    5071 73.0% 02-Feb-96 21:19:18 +types.c
+     438     213 51.3% 12-Feb-96 09:39:30 +bind.c
+     501     256 48.9% 15-Apr-96 17:44:16 +gb.c
+  141212   19821 85.9% 06-May-96 15:34:42 +gbZ80.c
+   51784    8477 83.6% 06-May-96 12:04:08 +gbZ80.md
+    4833    1382 71.4% 06-May-96 12:04:08 +Makefile
+    6751    2062 69.4% 27-Sep-96 21:12:50 +crt0.o
+   14792    4113 72.1% 03-Apr-96 21:43:48 +crt0.s
+    6137    1605 73.8% 27-Sep-96 21:14:12 +drawing.o
+   10049    1913 80.9% 15-Apr-96 17:03:00 +drawing.s
+   12383    1584 87.2% 15-Apr-96 19:19:32 +font_a.h
+   11279    1198 89.3% 15-Apr-96 14:23:20 +font_b.h
+    1864     824 55.7% 28-Mar-96 22:45:42 +global.h
+    7216    1850 74.3% 16-Apr-96 10:08:14 +stdio.c
+   25409    4889 80.7% 27-Sep-96 21:14:28 +stdio.o
+   28064    5625 79.9% 27-Sep-96 21:14:38 +terminal.o
+   12484    3227 74.1% 16-Apr-96 12:21:46 +terminal.s
+    7339    2257 69.2% 11-Sep-96 16:56:16 +aslink.h
+    3187    1160 63.6% 11-Sep-96 16:29:14 +lkarea.c
+    2976     908 69.4% 11-Sep-96 16:56:14 +lkdata.c
+    3666    1315 64.1% 11-Sep-96 16:31:48 +lkeval.c
+    1507     637 57.7% 28-Feb-96 22:53:52 +lkgb.c
+    1224     604 50.6% 11-Sep-96 16:29:36 +lkhead.c
+     745     385 48.3% 27-Feb-96 22:48:10 +lkihx.c
+    2483     991 60.0% 11-Sep-96 16:28:24 +lklex.c
+    3827    1391 63.6% 27-Feb-96 22:48:10 +lklist.c
+    8240    2717 67.0% 11-Sep-96 16:25:56 +lkmain.c
+    7733    2110 72.7% 11-Sep-96 16:32:48 +lkrloc.c
+     701     377 46.2% 27-Feb-96 22:48:10 +lks19.c
+    3875    1625 58.0% 11-Sep-96 16:30:08 +lksym.c
+     277     161 41.8% 17-Sep-96 21:32:52 +SCOPTIONS
+     762     244 67.9% 17-Sep-96 21:31:08 +smakefile
+     536     269 49.8% 15-Apr-96 14:25:22 +8q.c
+     738     227 69.2% 15-Apr-96 14:25:14 +array.c
+   20025    3947 80.2% 03-Apr-96 21:43:52 +fish.h
+     975     473 51.4% 15-Apr-96 14:25:56 +init.c
+    1160     563 51.4% 15-Apr-96 14:25:36 +sort.c
+    1548     669 56.7% 15-Apr-96 14:25:48 +struct.c
+    2262     808 64.2% 03-Apr-96 23:18:36 +test.c
+-------- ------- ----- --------- --------
+ 1585305  407047 74.3% 10-Oct-96 02:48:42   159 files

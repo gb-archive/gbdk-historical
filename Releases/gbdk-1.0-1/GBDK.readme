@@ -1,0 +1,62 @@
+Short:    GameBoy Developer's Kit V1.0 rev. 1
+Author:   glue@df.lth.se <Lars Malmborg>
+Uploader: glue@df.lth.se <Lars Malmborg>
+Version:  1.0
+Type:     dev/cross
+
+GBDK (GameBoy Developer's Kit) is a full environment for developing software
+for GameBoy and hence Virtual GameBoy (Aminet:misc/emu/AmigaVGB.lha).
+This is an Amiga port of the UN*X version with some minor modifications.
+Included is an ANSI C compiler, assembler, linker and and an easy to use
+front-end as well as a bitmap converter to convert ILBM's to tiles used by
+GameBoy. I've also tried to merge all information on GameBoy programming
+into an AmigaGuide.
+Why is this cool?
+Some link libraries are included, so among others, printf() and scanf() is
+supported!
+
+
+============================= Archive contents =============================
+
+Original  Packed Ratio    Date     Time    Name
+-------- ------- ----- --------- --------  -------------
+   34656   19520 43.6% 03-Oct-96 12:18:18 +asGB
+   34092   20256 40.5% 20-Sep-96 18:34:28 +cpp
+   26088   15089 42.1% 27-Sep-96 21:29:52 +ILBMtoGB
+   18356   11022 39.9% 26-Sep-96 22:35:54 +lcc
+   27848   16280 41.5% 17-Sep-96 21:37:04 +linkGB
+  203024   99574 50.9% 29-Sep-96 17:45:36 +rcc
+  142678   32058 77.5% 05-Apr-96 20:39:30 +asmlnk.doc
+   85788   24370 71.5% 02-Oct-96 14:13:40 +GBDK.guide
+     168      87 48.2% 02-Oct-96 13:41:58 +make
+    1330     532 60.0% 16-Apr-96 12:23:58 +rpn.c
+   23092    3894 83.1% 08-May-96 08:35:10 +sound.c
+   35911    5319 85.1% 18-Sep-96 11:46:00 +space.s
+    8741    1891 78.3% 03-Jun-96 13:14:22 +sprite.c
+     728     434 40.3% 02-Oct-96 14:35:04 +GBDK.readme
+     242     162 33.0% 03-Apr-96 21:43:48 +graphics.h
+     424     211 50.2% 26-Feb-96 22:12:18 +stdarg.h
+     955     336 64.8% 16-Apr-96 08:52:42 +stdio.h
+    1986     540 72.8% 06-May-96 12:03:52 +stdlib.h
+    3747    1255 66.5% 02-Oct-96 14:05:50 +Install-GBDK
+     673     331 50.8% 02-Oct-96 12:15:14 +Install-GBDK.info
+    6751    2062 69.4% 27-Sep-96 21:12:50 +crt0.o
+   14792    4113 72.1% 03-Apr-96 21:43:48 +crt0.s
+    6137    1605 73.8% 27-Sep-96 21:14:12 +drawing.o
+   10049    1913 80.9% 15-Apr-96 17:03:00 +drawing.s
+   12383    1584 87.2% 15-Apr-96 19:19:32 +font_a.h
+   11279    1198 89.3% 15-Apr-96 14:23:20 +font_b.h
+    1864     824 55.7% 28-Mar-96 22:45:42 +global.h
+    7216    1850 74.3% 16-Apr-96 10:08:14 +stdio.c
+   25409    4889 80.7% 27-Sep-96 21:14:28 +stdio.o
+   28064    5625 79.9% 27-Sep-96 21:14:38 +terminal.o
+   12484    3227 74.1% 16-Apr-96 12:21:46 +terminal.s
+     536     269 49.8% 15-Apr-96 14:25:22 +8q.c
+     738     227 69.2% 15-Apr-96 14:25:14 +array.c
+   20025    3947 80.2% 03-Apr-96 21:43:52 +fish.h
+     975     473 51.4% 15-Apr-96 14:25:56 +init.c
+    1160     563 51.4% 15-Apr-96 14:25:36 +sort.c
+    1548     669 56.7% 15-Apr-96 14:25:48 +struct.c
+    2262     808 64.2% 03-Apr-96 23:18:36 +test.c
+-------- ------- ----- --------- --------
+  814199  289007 64.5% 10-Oct-96 02:47:40   38 files
