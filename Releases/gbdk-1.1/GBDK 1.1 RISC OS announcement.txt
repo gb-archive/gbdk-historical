@@ -1,0 +1,29 @@
+https://groups.google.com/g/comp.sys.acorn.announce/c/zWV2cGy6JCs/m/i0dLfAi-bkMJ
+
+comp.sys.acorn.announce
+Paul Clifford
+Apr 4, 1997, 12:00:00 AM
+
+The Gameboy Development Kit was written by Pascal Felber to allow
+people to write their own Gameboy games, in C and Z80. It is supplied
+with examples and libraries dealing with text and sprite handling, and
+the games produced can be played on any platform with a Gameboy
+emulator (ie most). My port of it is available, with sources, at:
+http://www.plasma.demon.co.uk/gameboy/
+
+Recently added is the maketiles utility, which converts RISC OS
+sprites into Gameboy tile data. If you've already downloaded the GBDK,
+you ought to get yourself a copy, or creating tiles will be a long and
+boring process :)
+
+--
+Without scapegoats, humanity is bland. I blame the scapegoats for
+this.
+
+______________________________________________________________________
+d.s....@argonet.co.uk, Moderator of comp.sys.acorn.announce.
+Submissions to cs...@art.acorn.co.uk, related mail to
+csaa-r...@art.acorn.co.uk. A posting in comp.sys.acorn.announce
+does not constitute endorsement by any part of the Acorn Group.
+
+
