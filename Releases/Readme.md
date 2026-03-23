@@ -1,5 +1,11 @@
 ### Source URLs for Release Packages
 
+#### Early GBDK Releases
+Several early copies of GBDK were directly provided by Pascal Felber:
+- GBDK-1.0.tar.gz
+- GBDK-1.1.tar.gz
+- GBDK-1.1.1.zip
+- All of the releases in the `gbdk-2.0` folder
 
 #### GBDK 1.1 for RISC OS
 https://web.archive.org/web/19990224100843/http://www.plasma.demon.co.uk/gameboy/gbdk.html
@@ -37,3 +43,4 @@ This package contains example programs in assembly and in C.
 ##### gbdk: GameBoy Developer's kit - binary package
 The GameBoy Developer's Kit (GBDK), is a set of tools that enable to develop programs for the Nintendo GameBoy system, either in C or in assembly. GBDK includes a set of libraries for the most common requirements and generates image files for use with a real GameBoy or with an emulator like VGB or no3gmb.
 This package contains compiler, assembler, linker and documents.
+
